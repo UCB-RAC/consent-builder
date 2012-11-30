@@ -1,0 +1,60 @@
+@charset "UTF-8";
+@import url(../reindeer/styles.css);
+
+/* Global font styles */
+.v-app,
+.v-window,
+.v-popupview-popup,
+.v-tooltip,
+.v-app input,
+.v-app select,
+.v-app button,
+.v-app textarea,
+.v-window input,
+.v-window select,
+.v-window button,
+.v-window textarea,
+.v-popupview-popup input,
+.v-popupview-popup select,
+.v-popupview-popup button,
+.v-popupview-popup textarea,
+.v-filterselect-suggestpopup,
+.v-datefield-popup,
+.v-contextmenu,
+.v-Notification,
+.v-menubar-submenu,
+.v-drag-element {
+    font-size: 12pt;
+}
+
+.v-button-caption, .user-form-view .v-button-link .v-button-caption {
+    font-size: 11pt;
+}
+
+.v-label-h1,
+.v-label-h2,
+.v-caption-h1,
+.v-caption-h2,
+.white .v-label-h1,
+.white .v-label-h2,
+.white .v-caption-h1,
+.white .v-caption-h2 {
+    font-size: 24pt;
+    line-height: 28pt;
+}
+
+.v-verticallayout-user-form-view {
+	padding-left:   10em;
+    padding-right:  10em;
+    padding-top:    5em;
+}
+
+.breadcrumb-element .v-button-wrap .v-button-caption {
+	font-size: 		18pt;
+}
+
+.v-label-h2,
+.v-caption-h2 {
+	font-size: 18pt;
+	line-height: 22pt;
+}

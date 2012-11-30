@@ -1,0 +1,940 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	
+	<bean id="answersVersion" class="java.lang.Integer">
+		<!-- v.1: updates to -->
+		<constructor-arg value="1" />
+	</bean>
+
+	<bean id="formList" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.FormList" scope="prototype">
+		<constructor-arg>
+			<list>
+				<ref local="studyTitleForm" />
+				<ref local="piFacultySponsorForm" />
+				<ref local="departmentForm"/>
+				<ref local="researchTypeForm" />
+				<ref local="optionalQuestionsForm" />
+				<ref local="studySubtitleForm" />
+				<ref local="studentInvestigatorForm" />
+				<ref local="studentInvestigatorStatus" />
+				<ref local="purposeFormNonMed" />
+				<ref local="purposeFormMed" />
+				<ref local="numberSubjectsForm" />
+				<ref local="inclusionForm" />
+				<ref local="procScreenForm" />
+				<ref local="screenBloodForm" />
+				<ref local="screenPregnancyForm" />
+				<ref local="screenHIVForm" />
+				<ref local="screenOtherForm" />
+				<ref local="screenDurationForm" />
+				<ref local="procRandomztnForm" />
+				<ref local="procSBForm" />
+				<ref local="procSurveyForm" />
+				<ref local="procInterviewForm" />
+				<ref local="procFocusGroupForm"/>
+				<ref local="procObservationForm"/>
+				<ref local="procBehavioralTasksForm" />
+				<ref local="procAudioForm" />
+				<ref local="procVideoForm"/>
+				<ref local="procPhotographyForm"/>
+				<ref local="procSBOtherForm"/>
+				<ref local="procMedicalForm" />
+				<ref local="procBloodForm"/>
+				<ref local="procXRayForm"/>
+				<ref local="procMRIForm"/>
+				<ref local="procCTScanForm" />
+				<ref local="procDNAForm"/>
+				<ref local="procMedicalOtherForm" />
+				<ref local="ttlTimeForm" />
+				<ref local="locationForm" />
+				<ref local="benefitPForm" />
+				<ref local="benefitSForm" />
+				<ref local="risksSBForm" />
+				<ref local="risksMedicalForm" />
+				<ref local="risksMRIForm"/>
+				<ref local="risksCTForm"/>
+				<ref local="risksPlaceboForm" />
+				<ref local="risksUnknownForm" />
+				<ref local="dataReleaseForm" />
+				<ref local="dataIDForm" />
+				<ref local="dataStorageForm" />
+				<ref local="dataAccessForm" />
+				<ref local="cocForm" />
+				<ref local="dataRetentionForm" />
+				<ref local="specimenForm" />
+				<ref local="alternativesForm" />
+				<ref local="compensationForm" />
+				<ref local="costsForm" />
+				<ref local="tcInjuryForm" />
+				<ref local="contactForm" />
+				<!-- Hiding pending solution for text insertion in footer 
+				<ref local="cphsNumberForm" />
+				 -->
+				<ref local="generateDocForm" />
+			</list>
+		</constructor-arg>
+	</bean>
+	
+<!-- 
+	<bean id="migrationPlan" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.FormList" scope="prototype">
+	    <constructor-arg>
+	        <list>
+	            <bean id="benefitMigrationForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MigrationForm" scope="prototype">
+	              <constructor-arg ref="benefitPForm" />
+	            </bean>
+	        </list>
+	    </constructor-arg>
+	</bean>
+-->
+   	
+	<bean id="textField" scope="prototype" class="edu.berkeley.rac.vaadin.ui.TextField"
+	    p:widthString="60em" p:value="" p:nullRepresentation="" />
+    
+    <bean id="textArea" scope="prototype" class="org.vaadin.openesignforms.ckeditor.CKEditorTextField" p:value="" >
+        <constructor-arg>
+            <bean class="org.vaadin.openesignforms.ckeditor.CKEditorConfig" >
+                <property name="inPageConfig"><value>
+<![CDATA[
+{
+  toolbar: 'Custom',
+  toolbar_Custom: [['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat'],
+                   ['NumberedList','BulletedList','-','Outdent','Indent']],
+  removePlugins: 'elementspath',
+  contentsCss: ['VAADIN/widgetsets/org.vaadin.openesignforms.ckeditor.widgetset.VaadinCKEditorWidgetset/ckeditor/contents.css',
+                'VAADIN/ckeditor_override.css']
+       
+}
+]]>
+                </value></property>
+                <property name="bodyClass" value="v-richtextarea" />
+            </bean>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="yesNoChoice" scope="prototype" class="com.vaadin.ui.OptionGroup">
+		<constructor-arg><null /></constructor-arg>
+        	<constructor-arg>
+            	<list>
+                	<value>Yes</value>
+                    <value>No</value>
+                </list>
+            </constructor-arg>
+        <property name="multiSelect" value="false" />
+    </bean>
+
+	<bean id="researchTypeForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectForm" scope="prototype" >
+		<constructor-arg>
+	        <bean class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectField">
+	            <constructor-arg>
+                    <map>
+                        <entry key="Social-Behavioral" value="Social-behavioral" />
+                        <entry key="Biomedical" value="Biomedical (including screening tests, specimen collection)" />
+                    </map>
+                </constructor-arg>
+	        </bean>
+	    </constructor-arg>
+        <constructor-arg value="Research Type" />
+        <constructor-arg value="Does this study involve aspects of biomedical research, social-behavioral research, or both?" />
+        <constructor-arg value="researchType" />
+	</bean>
+
+	<bean id="optionalQuestionsForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectForm" scope="prototype">
+		<constructor-arg>
+			<bean class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectField">
+				<constructor-arg>
+					<map>
+						<entry key="Subgroup" value="Subgroups of subjects or sub-studies with different consent forms" />
+						<entry key="StudentInvestigator" value="Student or postdoctoral lead researcher" />
+						<entry key="NumSubjects" value="Anticipated number of study subjects (if relevant to consent)" />
+						<entry key="Randomization" value="Randomization procedures" />
+						<entry key="DirectBenefits" value="Benefits to individual subject" />
+						<entry key="Alternatives" value="Alternatives to participation" />
+						<entry key="Compensation" value="Compensation to subject (e.g., payment, course credit)" />
+						<entry key="Costs" value="Costs to subject" />
+						<entry key="Injury"	value="Risk of harms or discomforts beyond those in daily life" />
+					</map>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+		<constructor-arg value="Optional Information" />
+	 	<constructor-arg value="Select any of the following study aspects that apply." />
+	 	<constructor-arg value="optionalQuestions"></constructor-arg>
+	 	<!--  <property name="relevance"><map><entry key="SpelExpression" value="!(textAnswers['researchType'].getValue().contains('Biomedical'))" /></map></property>  -->
+	</bean>
+
+	<bean id="studyTitleForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textField" />
+        <constructor-arg value="Study Title" />
+        <constructor-arg value="What is the title of your study?" />
+        <constructor-arg value="studyTitle" />
+    </bean>
+
+    <bean id="studySubtitleForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textField" />
+        <constructor-arg value="Study Subgroup or Sub-Study Name" />
+        <constructor-arg value="If you have more than one group of subjects or sub-studies with different consent forms, what is the brief sub-title/identifier for this form (e.g., &quot;Control Group,&quot; &quot;RPP Subjects,&quot; &quot;Study 1&quot;)?" />
+        <constructor-arg value="studySubtitle" />
+        <property name="relevance"><map><entry key="optionalQuestions" value="Subgroup" /></map></property>
+    </bean>
+    
+    <bean id="piFacultySponsorForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+    	<constructor-arg ref="textField" />
+        <constructor-arg value="Principal Investigator / Faculty Sponsor" />
+        <constructor-arg>
+            <value><![CDATA[<p>Who is the Principal Investigator (PI) or Faculty Sponsor?</p>
+<p>Enter UC Berkeley study personnel as they are listed in eProtocol for this study.</p>
+<p>Note: Although an undergraduate, graduate, postdoctoral student or staff person may be the lead researcher on a project, they may <i>not</i> serve as study PI. A Faculty Sponsor is required in such cases. Please read <a target="_blank" href="http://cphs.berkeley.edu/eprotocol_faqs.html">Personnel Titles and Responsibilities: Roles in eProtocol</a> before completing this section.</p>
+<p>Use the PI's academic title (e.g., "Professor Jane Martin"). Note: In consent forms, the title &quot;Dr.&quot; should only be used for MDs.</p>
+			]]></value>
+        </constructor-arg>
+        <constructor-arg value="pi" />
+    </bean>
+
+    <bean id="studentInvestigatorForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+    	<constructor-arg ref="textField" />
+        <constructor-arg value="Lead Researcher Other Than UCB Faculty" />
+        <constructor-arg value="Who is the student, postdoc, or other individual acting as lead researcher on the study?" />
+        <constructor-arg value="si" />
+        <property name="relevance"><map><entry key="optionalQuestions" value="StudentInvestigator" /></map></property>
+    </bean>
+    
+    <bean id="studentInvestigatorStatus" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+    	<constructor-arg ref="textField" />
+    	<constructor-arg value="UCB Status" />
+    	<constructor-arg value="What is the UCB status of the lead researcher given in previous question. For example, &quot;a graduate student.&quot;" />
+    	<constructor-arg value="affiliation" />
+    	<property name="relevance"><map><entry key="optionalQuestions" value="StudentInvestigator" /></map></property>
+    </bean>
+    
+    <bean id="departmentForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+    	<constructor-arg ref="textField" />
+        <constructor-arg value="Department or School Affiliation" />
+        <constructor-arg value="What is the UCB school/department affiliation of the Principal Investigator (PI) or Faculty Sponsor?" />
+        <constructor-arg value="department" />
+        <property name="defaultText">
+        	<value><![CDATA[the [School/Department of...]]]>
+        	</value>
+        </property>
+    </bean>
+    
+    <bean id="purposeFormNonMed" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+    	<constructor-arg ref="textArea" />
+        <constructor-arg value="Study Purpose" />
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                    <p>What is the purpose of this research?</p>
+                    <p>Briefly describe what the study is designed to discover or establish.</p>
+                ]]>
+            </value>
+        </constructor-arg>
+        <constructor-arg value="purpose" />
+        <property name="defaultText">
+        	<value><![CDATA[<p>The purpose of this research study is to </p>]]></value>
+        </property>
+        <property name="relevance"><map><entry key="SpelExpression" value="!(textAnswers['researchType'].getValue().contains('Biomedical'))" /></map></property>
+    </bean>
+    
+    <bean id="purposeFormMed" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+    	<constructor-arg ref="textArea" />
+        <constructor-arg value="Study Purpose" />
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                    <p>What is the purpose of this research?</p>
+                    <p>Briefly describe what the study is designed to discover or establish.</p>
+                    <p><em>If applicable:</em> Any investigational drug(s) or device(s) to be used in the study should be noted as such and named. (These names should be used consistently throughout the consent form.)</p>
+                ]]>
+            </value>
+        </constructor-arg>
+        <constructor-arg value="purpose" />
+        <property name="defaultText">
+        	<value><![CDATA[<p>The purpose of this research study is to </p>]]></value>
+        </property>
+        <property name="relevance"><map><entry key="researchType" value="Biomedical" /></map></property>
+    </bean>
+
+    <bean id="numberSubjectsForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+    	<constructor-arg ref="textArea" />
+        <constructor-arg value="Number of Subjects / Multi-Site Study" />
+        <constructor-arg>
+            <value><![CDATA[<p><em>Not required, but if appropriate:</em> State total accrual goal for number of subjects. Give a short description about cohorts, if any. For multi-site studies, note other sites and give figures both for the whole study and for local enrollment at UC Berkeley. (<em>If not applicable, skip to the next question</em>).</p>]]></value>
+        </constructor-arg>
+        <constructor-arg value="numberSubjects" />
+        <property name="defaultText">
+        	<value><![CDATA[<p>Approximately ___ people will take part in this study.</p>]]></value>
+        </property>
+        <property name="relevance"><map><entry key="optionalQuestions" value="NumSubjects"></entry></map></property>
+    </bean>
+    
+    <bean id="inclusionForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+    	<constructor-arg ref="textArea" />
+        <constructor-arg value="Inclusion" />
+        <constructor-arg value="Why is the individual being asked to take part in this study?" />
+        <constructor-arg value="inclusion" />
+        <property name="defaultText">
+        	<value><![CDATA[<p>We are inviting you to participate in this study because</p]]></value>
+        </property>
+    </bean>
+    
+    <bean id="procScreenForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectForm" scope="prototype" >
+        <constructor-arg>
+        	 <bean class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectField">
+	            <constructor-arg>
+                    <map>
+                        <entry key="Blood" value="Blood draw (venipuncture)" />
+                        <entry key="Urine" value="Urine sample" />
+                        <entry key="Pregnancy" value="Pregnancy testing" />
+                        <entry key="Physical" value="Physical exam" />
+                        <entry key="Chart" value="Medical chart review" />
+                        <entry key="HIV" value="HIV testing" />
+                        <entry key="Other" value="Other" />
+                    </map>
+                </constructor-arg>
+	        </bean>
+        </constructor-arg>
+        <constructor-arg value="Screening Procedures" />
+        <constructor-arg>
+            <value>
+                <![CDATA[
+                    <p>Select <strong>screening</strong> procedures to be done in this study.</p>
+                    <p><em>If the procedure is not listed, specify &quot;Other&quot; and you will be asked to provide a description.</em></p>
+                ]]>
+            </value>
+        </constructor-arg>
+        <constructor-arg value="procScreen" />
+        <property name="relevance"><map><entry key="researchType" value="Biomedical" /></map></property>
+    </bean>
+    
+    <bean id="screenBloodForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Screening Procedures: Blood Draw (Venipuncture)" />
+        <constructor-arg value="Complete the description below." />
+        <constructor-arg value="screenBlood" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	    <p>Blood draw (venipuncture): You will be asked to give a blood sample for lab tests.  Approximately &laquo;<span class="prompt">XX [teaspoons or other commonly understood unit such as ounces/ml]</span>&raquo; of blood will be drawn by inserting a needle into a vein in your arm.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procScreen" value="Blood" /></map></property>
+    </bean>
+    
+    <bean id="screenPregnancyForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Screening Procedures: Pregnancy Testing" />
+        <constructor-arg>
+        	<value><![CDATA[
+        	    <p>Complete the description below.</p>
+        	    <p>(For pregnancy testing to be done prior to MRI or fMRI procedures, see <em>CPHS Guidelines on MRI in Research</em> for details.)</p>
+        	]]>
+        	</value>
+        </constructor-arg>
+        <constructor-arg value="screenPregnancy" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	    <p>Pregnancy test: Because the procedures/drugs to be used can affect a fetus, pregnant women may not participate in this study.  If you are a female of child-bearing potential (i.e., you have had your first menstrual period and have not yet reached menopause), a urine &laquo;<span class="prompt">or blood</span>&raquo; test will be done at the initial visit &laquo;<span class="prompt">or other time</span>&raquo; to make sure you are not pregnant.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procScreen" value="Pregnancy" /></map></property>
+    </bean>
+    
+    <bean id="screenHIVForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Screening Procedures: HIV Testing" />
+        <constructor-arg value="Complete the description below." />
+        <constructor-arg value="screenHIV" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>HIV testing: Some of the blood sample will be used to test for HIV (human immunodeficiency virus).  You will receive the test results in person and will be counseled about the meaning of these results before and after the test &laquo;<span class="prompt">or as accurate/appropriate</span>&raquo;</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procScreen" value="HIV" /></map></property>
+    </bean>
+    
+    <bean id="screenOtherForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Screening Procedures: Other" />
+        <constructor-arg value="Describe any other screening procedures below." />
+        <constructor-arg value="screenOther" />
+        <property name="defaultText"><value><![CDATA[
+        	Other: 
+        ]]></value></property>
+        <property name="relevance"><map><entry key="procScreen" value="Other" /></map></property>
+    </bean>
+
+    <bean id="screenDurationForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Screening Procedures: Duration" />
+        <constructor-arg value="How long with screening procedures take? Estimate duration." />
+        <constructor-arg value="screenDuration" />
+        <property name="defaultText"><value><![CDATA[
+        	The screening procedures will take a total of &laquo;<span class="prompt">...</span>&raquo; minutes (&laquo;<span class="prompt">...</span>&raquo; hours).
+        ]]></value></property>
+        <property name="relevance"><map><entry key="procScreen" value="," /></map></property>
+    </bean>
+        	
+    <bean id="procRandomztnForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Randomization Procedures" />
+        <constructor-arg value="List and describe randomization procedure(s) to be done." />
+        <constructor-arg value="procRandomztn" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>Randomization:  You will be randomly assigned to one of the study groups described below.  This means that the group you are in will be chosen by chance, like the flip of a coin. You will have an equal chance of being placed in &laquo;<span class="prompt">either/any</span>&raquo; group.</p>
+				<ul>
+					<li>If you are in Group 1 &laquo;<span class="prompt">Explain what will happen for this group.</span>&raquo;</li>
+					<li>If you are in Group 2 &laquo;<span class="prompt">Explain what will happen for this group.</span>&raquo;</li>
+					<li>&laquo;<span class="prompt">Etc.</span>&raquo;</li>
+				</ul>
+			<p>Other information (e.g., single-blind, double-blind, placebo-controlled, etc.)</p>
+        	]]></value>
+        </property>
+        <property name="relevance"><map><entry key="optionalQuestions" value="Randomization"></entry></map></property>
+    </bean>
+    
+    <bean id="procSBForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectForm" scope="prototype" >
+        <constructor-arg>
+        	 <bean class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectField">
+	            <constructor-arg>
+                    <map>
+                        <entry key="Survey" value="Surveys or questionnaires" />
+                        <entry key="Interview" value="Individual interviews" />
+                        <entry key="Focus" value="Focus groups" />
+                        <entry key="Observation" value="Participant observation" />
+                        <entry key="Tasks" value="Behavioral tasks" />
+                        <entry key="Audio" value="Audio recording" />
+                        <entry key="Video" value="Video recording" />
+                        <entry key="Photography" value="Photography" />
+                        <entry key="Other" value="Other" />
+                    </map>
+                </constructor-arg>
+	        </bean>
+        </constructor-arg>
+        <constructor-arg value="Main Procedures: Social-Behavioral" />
+        <constructor-arg>
+            <value><![CDATA[<p>Select main social-behavioral procedures to be done.</p>
+<p><em>If the procedure is not listed, specify &quot;Other&quot; and you will be asked to provide a description.</em></p>]]></value>
+		</constructor-arg>
+        <constructor-arg value="procSB" />
+        <property name="relevance"><map><entry key="researchType" value="Behavioral" /></map></property>
+    </bean>
+    
+    <bean id="procSurveyForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Social-Behavioral Procedures: Surveys or Questionnaires" />
+        <constructor-arg value="Complete the description below." />
+        <constructor-arg value="procSurvey" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>You will be asked to complete a questionnaire about &laquo;<span class="prompt">describe themes, types of questions</span>&raquo;. &laquo;<span class="prompt">Describe method, e.g., "The questionnaire is completed online" or "the questionnaire is on paper and you write in your answers"</span>&raquo;. This should take about &laquo;<span class="prompt">## minutes</span>&raquo; (&laquo;<span class="prompt"># hours</span>&raquo;).</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procSB" value="Survey" /></map></property>
+    </bean>
+    
+    <bean id="procInterviewForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Social-Behavioral Procedures: Individual Interviews" />
+        <constructor-arg value="Complete the description below." />
+        <constructor-arg value="procInterview" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>I will conduct an interview with you at &laquo;<span class="prompt">[e.g., a time and location of your choice]</span>&raquo;.  The interview will involve questions about &laquo;<span class="prompt">themes, types of questions</span>&raquo;.  It should last about &laquo;<span class="prompt">## minutes</span>&raquo; (&laquo;<span class="prompt"># hours</span>&raquo;).</p>
+        	<p>&laquo;<span class="prompt">If applicable:</span>&raquo; I expect to conduct only one interview; however, follow-ups may be needed for clarification.  If so, I will contact you by mail/phone to request this. &laquo;<span class="prompt">Provide brief information about follow-up interviews including time frame, maximum number, types of questions if different from the original, etc.</span>&raquo;</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procSB" value="Interview" /></map></property>
+    </bean>
+
+    <bean id="procFocusGroupForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Social-Behavioral Procedures: Focus Groups" />
+        <constructor-arg value="Provide a description below." />
+        <constructor-arg value="procFocusGroup" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>You will ...</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procSB" value="Focus" /></map></property>
+    </bean>
+    
+    <bean id="procObservationForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Social-Behavioral Procedures: Participant Observation" />
+        <constructor-arg value="Provide a description below." />
+        <constructor-arg value="procObservation" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>You will ...</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procSB" value="Observation" /></map></property>
+    </bean>
+
+   <bean id="procBehavioralTasksForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Social-Behavioral Procedures: Behavioral Tasks" />
+        <constructor-arg value="Provide a description below." />
+        <constructor-arg value="procBehavioralTasks" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>You will ...</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procSB" value="Tasks" /></map></property>
+    </bean>
+
+    <bean id="procAudioForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Social-Behavioral Procedures: Audio Recording" />
+        <constructor-arg value="Complete the description below." />
+        <constructor-arg value="procAudio" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>With your permission, I will make an audio recording and take notes during the interview &laquo;<span class="prompt">/other</span>&raquo;.  This is to accurately record information you provide, and will be used for transcription purposes only &laquo;<span class="prompt">if accurate – adapt if other uses intended, per below</span>&raquo;.  If you choose not to be recorded, I will take notes instead.  If you agree to being recorded but feel uncomfortable at any time during the interview &laquo;<span class="prompt">/other</span>&raquo;, I can turn off the recorder at your request.  Or if you don't wish to continue, you can stop the interview &laquo;<span class="prompt">/other</span>&raquo; at any time.</p> 
+			<p>&laquo;<span class="prompt">If applicable</span>&raquo;: I may want to use some of the audio recordings of you in public presentations related to the research.  Please read the attached Media Records Release Form. It outlines several possible uses of the recordings and asks for your specific consent to use them in each way.  I will not use any recordings of you in any future presentation without your consent.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procSB" value="Audio" /></map></property>
+    </bean>
+    
+    <bean id="procVideoForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Social-Behavioral Procedures: Video Recording" />
+        <constructor-arg value="Complete the description below with the information for this study." />
+        <constructor-arg value="procVideo" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>With your permission, I will make a video recording and take notes during the interview &laquo;<span class="prompt">/other</span>&raquo;.  This to accurately record information for this study only &laquo;<span class="prompt">if accurate – adapt if other uses intended, per below</span>&raquo;.  If you choose not to be video recorded, I will take notes instead.  If you agree to being recorded but feel uncomfortable at any time during the interview &laquo;<span class="prompt">/other</span>&raquo;, I can turn off the video recorder at your request &laquo;<span class="prompt">if accurate; if not, describe other options</span>&raquo;.  Or if you don't wish to continue, you can stop the interview &laquo;<span class="prompt">/other</span>&raquo; at any time.</p> 
+			<p>&laquo;<span class="prompt">If applicable</span>&raquo;: I may want to use some of the video recordings of you in public presentations related to the research.  Please read the attached Media Records Release Form. It outlines several possible uses of the recordings and asks for your specific consent to use them in each way.  I will not use any recordings of you in any future presentation without your consent.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procSB" value="Video" /></map></property>
+    </bean>
+
+    <bean id="procPhotographyForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Social-Behavioral Procedures: Photography" />
+        <constructor-arg value="Complete the description below with the information for this study." />
+        <constructor-arg value="procPhotography" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>With your permission, I will take photographs and take notes during the interview &laquo;<span class="prompt">/other</span>&raquo;.  The photography is to accurately record information for this study only &laquo;<span class="prompt">if accurate – adapt if other uses intended, per below</span>&raquo;.  If you choose not to be photographed, I will take notes instead.  If you agree to being photographed but feel uncomfortable at any time during the interview &laquo;<span class="prompt">/other</span>&raquo;, I can stop taking pictures at your request &laquo;<span class="prompt">if accurate; if not, describe other options</span>&raquo;.  Or if you don't wish to continue, you can stop the interview &laquo;<span class="prompt">/other</span>&raquo; at any time. 
+			<br />&laquo;<span class="prompt">If applicable</span>&raquo;: I may want to use some of the pictures of you in public presentations related to the research.  Please read the attached Media Records Release Form. It outlines several possible uses of the recordings and asks for your specific consent to use them in each way.  If you agree to allow these items to be used after this research study is over, please read, initial, and sign the Media Records Release Form in addition to this consent form.  I will not use any recordings of you in any future presentation without your consent.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procSB" value="Photography" /></map></property>
+    </bean>
+
+    <bean id="procSBOtherForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Social-Behavioral Procedures: Other" />
+        <constructor-arg value="Describe any other main social-behavioral procedures." />
+        <constructor-arg value="procSBOther" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>You will...</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procSB" value="Other" /></map></property>
+    </bean>
+
+    <bean id="procMedicalForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectForm" scope="prototype" >
+        <constructor-arg>
+        	 <bean class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectField">
+	            <constructor-arg>
+                    <map>
+                        <entry key="Blood" value="Blood draw (venipuncture)" />
+                        <entry key="X-ray" value="X-ray" />
+                        <entry key="MRI" value="MRI scan" />
+                        <entry key="CT" value="CT scan" />
+                        <entry key="DNA" value="DNA/genetic sampling" />
+                        <entry key="Other" value="Other" />
+                    </map>
+                </constructor-arg>
+	        </bean>
+        </constructor-arg>
+        <constructor-arg value="Main Procedures: Biomedical" />
+        <constructor-arg>
+            <value><![CDATA[<p>Select main biomedical procedures to be done.</p>
+<p><em>If the procedure is not listed, specify &quot;Other&quot; and you will be asked to provide a description.</em></p>]]></value>
+        </constructor-arg>
+        <constructor-arg value="procMedical" />
+        <property name="relevance"><map><entry key="researchType" value="Biomedical" /></map></property>
+    </bean>
+
+    <bean id="procBloodForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Biomedical Procedures: Blood Draw" />
+        <constructor-arg value="Complete the description below." />
+        <constructor-arg value="procBlood" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>&laquo;<span class="prompt">Indicate number of occasions and/or frequency</span>&raquo;, a blood sample will be drawn by inserting a needle into a vein in your arm.  Each sample will be approximately &laquo;<span class="prompt">XX [teaspoons or other commonly understood unit such as ounces/ml]</span>&raquo;.  A total of about &laquo;XX (teaspoons/other)&raquo; will be drawn for the whole study.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procMedical" value="Blood" /></map></property>
+    </bean>
+
+    <bean id="procXRayForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Biomedical Procedures: X-Ray" />
+        <constructor-arg value="Complete the description below." />
+        <constructor-arg value="procXRay" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>You will have an x-ray of your &laquo;<span class="prompt">part of body, indicate when and/or frequency</span>&raquo; in order to check &laquo;<span class="prompt">XXX</span>&raquo;.  Each x-ray will take about &laquo;<span class="prompt">XX minutes / hours</span>&raquo;.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procMedical" value="X-Ray" /></map></property>
+    </bean>
+
+    <bean id="procMRIForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Biomedical Procedures: MRI Scan" />
+        <constructor-arg><value><![CDATA[
+        	<p>Complete the description below.</p>
+        	<p>(See <em>CPHS Guidelines on MRI in Research</em> for detail on consent language, etc.)</p>
+        ]]></value></constructor-arg>
+        <constructor-arg value="procMRI" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>You will have a Magnetic Resonance Imaging (MRI) exam done &laquo;<span class="prompt">indicate when and/or frequency</span>&raquo;.  The MRI scanner measures small changes in magnetic fields produced in your brain and generates images of the human brain.</p>
+			<p>For the MRI scan, you will be asked to lie down on a platform that slides into the center of a large magnet. A plastic coil will be placed around your head and foam pads will be placed to limit head movement during the study. You will then be slid into the magnet and asked to lie still for approximately 60 to 90 minutes (1 to 1.5 hours), while the MRI images are acquired.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procMedical" value="MRI" /></map></property>
+    </bean>
+
+    <bean id="procCTScanForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Biomedical Procedures: CT Scan" />
+        <constructor-arg value="Complete the description below." />
+        <constructor-arg value="procCTScan" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>You will have a computed tomography (CT) [or computerized axial tomography (CAT)] scan of your &laquo;<span class="prompt">part of body, indicate when and/or frequency</span>&raquo;, in order to check &laquo;<span class="prompt">XXX</span>&raquo;.  A CT scan uses special x-ray equipment to make detailed pictures of body tissues and organs.</p>
+			<p>For the CT scan, you will be asked to lie still on a table with your &laquo;<span class="prompt">XXX</span>&raquo; inside a large doughnut-shaped machine.  The table will move and the machine will make clicking and whirring noises as the pictures are taken.  [If appropriate: An iodine dye (contrast material) will first be &laquo;<span class="prompt">injected into a vein/given to you orally/rectally</span>&raquo;.  The dye makes tissue and organs more visible in the pictures.]  Each CT scan will take about 15 to 30 minutes.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procMedical" value="CT" /></map></property>
+    </bean>
+
+    <bean id="procDNAForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Biomedical Procedures: DNA/Genetic Sampling" />
+        <constructor-arg><value><![CDATA[
+        	<p>Edit the description below.</p>
+        	<p>(See <em>CPHS Guidelines on Human DNA/Genetics Research</em> for detail on consent language, etc.)</p>
+        ]]></value></constructor-arg>
+        <constructor-arg value="procDNA" />
+        <property name="defaultText">
+        	<value><![CDATA[
+        	<p>You will be asked for a cheek swab to sample cells for DNA testing. This involves briefly wiping the inside of your cheek with a cotton swab.</p>
+			]]></value>
+        </property>
+        <property name="relevance"><map><entry key="procMedical" value="DNA" /></map></property>
+    </bean>
+
+    <bean id="procMedicalOtherForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Biomedical Procedures: Other" />
+        <constructor-arg value="Describe any other main biomedical procedures below." />
+        <constructor-arg value="procMedicalOther" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>You will...</p>
+		]]></value></property>
+        <property name="relevance"><map><entry key="procMedical" value="Other" /></map></property>
+    </bean>
+     
+    <bean id="ttlTimeForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Duration of Study (Total Time)" />
+        <constructor-arg value="What is the total time of involvement for each participant?" />
+        <constructor-arg value="ttlTime" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>Participation in this study will involve a total of &laquo;<span class="prompt">[number] [hours/days/weeks/months/years]</span>&raquo; of your time.</p> 
+        ]]></value></property>
+    </bean>
+
+	<bean id="locationForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Location(s) of Study" />
+        <constructor-arg value="Where will study procedures take place? Specify if different procedures will take place at different locations." />
+        <constructor-arg value="location" />
+        <property name="defaultText" value="All study procedures will take place at..." />
+    </bean>
+
+	<bean id="benefitPForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Direct Benefits to Participant" />
+        <constructor-arg value="Describe any potential direct benefits to the participant here." />
+        <constructor-arg value="benefitP" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>You may benefit directly from this study...</p>
+        ]]></value></property>
+        <property name="relevance"><map><entry key="optionalQuestions" value="DirectBenefits"></entry></map></property>
+    </bean>
+
+	<bean id="benefitSForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="General Benefits" />
+        <constructor-arg value="Describe potential general benefits, e.g., to others/society/scientific knowledge, here." />
+        <constructor-arg value="benefitS" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>We hope that the information gained from the study will help...</p>
+        ]]></value></property>
+    </bean>
+
+	<bean id="risksSBForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Risks and Discomforts: Social-Behavioral" />
+        <constructor-arg value="List the possible risks and/or discomforts of study participation and describe each one." />
+        <constructor-arg value="risksSB" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>Some of the research questions may make you uncomfortable or upset.  You are free to decline to answer any questions you don't wish to, or to stop the interview &laquo;<span class="prompt">/other</span>&raquo; at any time.</p>
+        	<p>&laquo;<span class="prompt">Other</span>&raquo;</p>
+        ]]></value></property>
+        <property name="relevance"><map><entry key="researchType" value="Behavioral" /></map></property>
+    </bean>
+
+    <bean id="risksMedicalForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectForm" scope="prototype" >
+        <constructor-arg>
+        	 <bean class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.MultiSelectField">
+	            <constructor-arg>
+                    <map>
+                        <entry key="Blood" value="Blood draw (venipuncture)" />
+                        <entry key="X-ray" value="X-ray" />
+                        <entry key="MRI" value="MRI scan" />
+                        <entry key="CT" value="CT scan" />
+                        <entry key="HIV" value="HIV testing" />
+                        <entry key="Randomization" value="Randomization risks" />
+                        <entry key="Placebo" value="Placebo risks" />
+                        <entry key="Unknown" value="Unknown risks" />
+                    </map>
+                </constructor-arg>
+	        </bean>
+        </constructor-arg>
+        <constructor-arg value="Risks and Discomforts: Biomedical" />
+        <constructor-arg>
+            <value><![CDATA[<p>Select the applicable risks and/or discomforts of study participation.</p>
+<p><em>If there may be unknown risks, select that option and you will be asked to provide context.</em></p>]]></value>
+        </constructor-arg>
+        <constructor-arg value="risksMedical" />
+        <property name="relevance"><map><entry key="researchType" value="Biomedical" /></map></property>
+    </bean>
+
+    <bean id="risksMRIForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Risks and Discomforts: MRI Scan" />
+        <constructor-arg><value><![CDATA[
+        	<p>Complete the description below with the information for this study.</p>
+        	<p>(See <em>CPHS Guidelines on MRI in Research</em> for detail on consent language, etc.)</p>
+        ]]></value></constructor-arg>
+        <constructor-arg value="risksMRI" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>MRI: The magnets in the MRI scanner are extremely powerful and will attract any metallic objects brought into the MRI room, so you must be careful to leave anything made of metal outside the room. People with pacemakers, heart rhythm disturbances, or certain metallic implants in their body cannot participate in this study. You will be screened for these conditions.</p> 
+			<p>While there are minimal risks from MRI as it is to be performed and MRI scanning is painless, participation may involve some discomfort. In particular, you may be bothered by the loud noise during the study that is due to beeping and hammering sounds made when the scanner is collecting measurements. Disposable earplugs will be provided to diminish the noise. Also, some people become claustrophobic while inside the scanner. (Individuals with a history of claustrophobia, which is a fear of being enclosed in small spaces, will be excluded from the study.) You may also experience stimulation of the nerves in your body, which feels like a gentle tap or sensation of mild electric shock.</p> 
+			<p>[&laquo;If appropriate:&raquo; We will be able to communicate with you during the session via an intercom system.]  If you feel uncomfortable in the scanner for any reason, please let us know and we will stop the procedure.</p> 
+		]]></value></property>
+        <property name="relevance"><map><entry key="risksMedical" value="MRI" /></map></property>
+    </bean>
+
+    <bean id="risksCTForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Risks and Discomforts: CT Scan" />
+        <constructor-arg><value><![CDATA[
+        	<p>Complete the description below with the information for this study.</p>
+        	<p>(See <em>CPHS Guidelines on MRI in Research</em>  for detail on consent language, etc.)</p>
+        ]]></value></constructor-arg>
+        <constructor-arg value="risksCT" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>CT scan: CT scans involve the risks of radiation. The amount of radiation you will be exposed to is relatively small.  Such doses of radiation may be potentially harmful, but the risks are so small that they are difficult to measure.  If you have already had many x-rays or are especially concerned with radiation exposure, you should discuss this with the researchers before agreeing to be in the study.</p>
+        	<p>In addition, if contrast material (iodine dye) is used, there is a slight risk of developing an allergic reaction, from mild (itching, rash) to severe (difficulty breathing, shock, or rarely, death).  The contrast material may also cause kidney problems, especially if you are dehydrated or have poor kidney function.  The study doctors will ask you about any allergies or related conditions before the procedure.  If you have any of these problems, you may not be allowed to have a CT scan &laquo;<span class="prompt">/continue in the study</span>&raquo;.</p>
+			<p>Having a CT scan may mean some added discomfort for you.  In particular, you may be bothered by feelings of claustrophobia when placed inside the CT scanner, or by lying in one position for a long time.  If contrast material is used, you may feel discomfort when it is injected &laquo;<span class="prompt">/given by XXX</span>&raquo;.  You may feel warm and flushed and get a metallic taste in your mouth. Rarely, the contrast material may cause nausea, vomiting, or a headache. &laquo;<span class="prompt">List other risks as appropriate to the method by which contrast agent is administered]&laquo;. &laquo;<span class="prompt">If sedation may be used, discuss risks here]&laquo;.</p> 
+		]]></value></property>
+        <property name="relevance"><map><entry key="risksMedical" value="CT" /></map></property>
+    </bean>
+
+    <bean id="risksPlaceboForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Risks and Discomforts: Placebo Risks" />
+        <constructor-arg value="Complete the description below with the information for this study." />
+        <constructor-arg value="risksPlacebo" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>If you are in the group that receives placebo, your condition will go without the active (study) treatment for &laquo;<span class="prompt">XX weeks/months</span>&raquo;.</p> 
+		]]></value></property>
+        <property name="relevance"><map><entry key="risksMedical" value="Placebo" /></map></property>
+    </bean>
+
+    <bean id="risksUnknownForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Risks and Discomforts: Unknown Risks" />
+        <constructor-arg value="You may provide context for any unknown risks below." />
+        <constructor-arg value="risksUnknown" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>The experimental treatments may have side effects that no one knows about yet.  The researchers will let you know if they learn anything that might make you change your mind about participating in the study.</p> 
+		]]></value></property>
+        <property name="relevance"><map><entry key="risksMedical" value="Unknown" /></map></property>
+    </bean>
+
+	<bean id="dataReleaseForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+		<constructor-arg ref="yesNoChoice" />
+		<constructor-arg value="Release of Identifying Information" />
+		<constructor-arg value="Will participants be asked for their agreement to release identifiable information about them?" />
+		<constructor-arg value="dataRelease" />
+	</bean>
+	
+	<bean id="dataIDForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Data Collection/Identification" />
+        <constructor-arg><value><![CDATA[
+         	<p>How will data be collected/de-identified to protect confidentiality? <em>Choose the measure(s) you will use and edit appropriately.</em></p>
+         	<p>See <a href="http://cphs.berkeley.edu/datasecurity.html">CPHS Data Security Policy</a> for further detail about subject confidentiality.</p> 
+			<p>Note:  Since there is no legal privilege between investigator and subject, a guarantee of complete/strict confidentiality should not be given or implied in the form.</p> 
+		]]></value></constructor-arg>
+        <constructor-arg value="dataID" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>The data will be collected anonymously. We will not maintain a link between your identity and the research data.</p> 
+			<p>Personal identifiers will be removed &laquo;<span class="prompt">state point in study when this will occur, e.g., "immediately after audio recordings have been transcribed."</span>&raquo;</p>
+			<p>Other &laquo;<span class="prompt">(describe)</span>&raquo;</p>
+        ]]></value></property>
+    </bean>
+
+    <bean id="dataStorageForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Data Storage" />
+        <constructor-arg value="How will the data be stored? Edit the statement below." />
+        <constructor-arg value="dataStorage" />
+        <property name="defaultText"><value><![CDATA[
+        		<p>Your research records, including &laquo;<span class="prompt">insert all that apply: audio recordings, video recordings, computer-based data</span>&raquo;, will be stored &laquo;<span class="prompt">choose all that apply:</span>&raquo; in a locked cabinet, in a secured building; in an encrypted format, on a password-protected computer, other &laquo;<span class="prompt>(describe)</span>&raquo;].</p> 
+        ]]></value></property>
+    </bean>
+   
+    <bean id="dataAccessForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Access to Study Data" />
+        <constructor-arg value="Who will have access to the study data? Choose and edit statement(s) below." />
+        <constructor-arg value="dataAccess" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>Only I/the researcher(s) will have access to your study records.</p>
+			<p>Only my faculty advisor and I will have access to your study records.</p>
+			<p>Your personal information may be given out if required by law. Organizations that may look at and copy your medical records for research, quality assurance, or data analysis include:<br />
+			&laquo;<span class="prompt">List relevant organizations, e.g., study sponsor, FDA (if study involves drugs, devices, or biologics regulated by the FDA), etc.</span>&raquo;</p>
+			<p>&laquo;<span class="prompt">If there is a reasonable expectation (from topic under study and/or target subject population) that reportable information may be disclosed to the researcher during the study, use wording such as:</span>&raquo;<br />
+			&laquo;<span class="prompt">Sensitive/reportable research information</span>&raquo;: We will keep your study data as confidential as possible, unless it is certain information that we must report for legal or ethical reasons, such as child abuse, elder abuse, or intent to hurt yourself or others.</p>
+			
+        ]]></value></property>
+    </bean>
+    
+	<bean id="cocForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+		<constructor-arg ref="yesNoChoice" />
+		<constructor-arg value="Certificate of Confidentiality" />
+		<constructor-arg value="Has a Certificate of Confidentiality been obtained from the NIH for this study?" />
+		<constructor-arg value="coc" />
+	</bean>
+	
+	<bean id="hipaaForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+		<constructor-arg ref="yesNoChoice" />
+		<constructor-arg value="Protected Health Information" />
+		<constructor-arg value="Will protected health information as defined by HIPAA be accessed, used, created, or disclosed?" />
+		<constructor-arg value="hipaa" />
+	</bean>
+
+    <bean id="dataRetentionForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Data Retention" />
+        <constructor-arg value="How long will research data be maintained? Choose and edit statement(s) below"/>
+        <constructor-arg value="dataRetention" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>The [audio/video recordings] will be transcribed and the tapes will be erased at the end of the study.</p> 
+			<p>The research data will be retained for _____ and then destroyed.</p> 
+			<p>The research data will be destroyed at the end of the study.</p> 
+			<p>The research data will be maintained for possible use in future research by myself or others. I will retain this data for up to ___ months/years after the study is over. The same measures described above will be taken to protect confidentiality of this study data.</p>
+			<p>&laquo;<span class="prompt">Other:</span>&raquo; The research data will be ...</p> 
+        ]]></value></property>
+    </bean>
+    
+    <bean id="specimenForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="yesNoChoice" />
+        <constructor-arg value="Specimen Ownership" />
+        <constructor-arg value="Will specimens be collected as part of this study?" />
+        <constructor-arg value="specimen" />
+        <property name="relevance"><map><entry key="researchType" value="Biomedical" /></map></property>
+    </bean>
+    
+    <bean id="alternativesForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Alternatives to Participation" />
+        <constructor-arg value="If there are any alternatives to participation beyond not taking part in this study, describe the available alternative(s). (E.g., if subjects are students and course credit is given for participation, an alternative assignment of equal or lesser difficulty must be offered, and should be referenced here.) If not, skip to the next form." />
+        <constructor-arg value="alternatives" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>As an alternative to participating in this study, you may choose to</p>
+        ]]></value></property>
+        <property name="relevance"><map><entry key="optionalQuestions" value="Alternatives"></entry></map></property>
+    </bean>
+   
+	<bean id="compensationForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Compensation" />
+        <constructor-arg value="If subjects will be compensated, describe the type of compensation (e.g., payment by cash/ check, gift card, course credit). Note total amount of compensation per participant and if applicable, describe the breakdown of compensation per procedure, visit, session, or task. Also describe any provision for pro-rating of compensation." />
+        <constructor-arg value="compensation" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>You will receive &laquo;<span class="prompt">type and amount of compensation</span>&raquo; for your participation in this study. You will receive &laquo;<span class="prompt">insert type and amount of compensation] [frequency - every Xth visit or per procedure/visit/session/task</span>&raquo;.</p> 
+        ]]></value></property>
+        <property name="relevance"><map><entry key="optionalQuestions" value="Compensation"></entry></map></property>
+    </bean>
+   
+    <bean id="costsForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Costs" />
+        <constructor-arg value="Describe any costs (e.g., transportation, standard of care, etc.) for which the participant or a third party payer will be responsible. If none, submit the statement below." />
+        <constructor-arg value="costs" />
+        <property name="defaultText" value="You will not be charged for any of the study activities." />
+        <property name="relevance"><map><entry key="optionalQuestions" value="Costs"></entry></map></property>
+    </bean>
+   
+    <bean id="tcInjuryForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Treatment and Compensation for Injury" />
+        <constructor-arg value="If the study involves risk of harms or discomforts beyond those encountered in daily life, complete the UCOP-required statement below:" /> 
+        <constructor-arg value="tcForInjury" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>It is important that you promptly tell the researcher &laquo;<span class="prompt">investigator’s name</span>&raquo;, if you believe that you have been injured because of taking part in this study. You can tell the researcher in person or call &laquo;<span class="prompt">her/him</span>&raquo; at &laquo;<span class="prompt">[phone number]</span>&raquo;.</p>
+			<p>If you are injured as a result of taking part in this study, University of California will provide necessary medical treatment. The costs of the treatment may be billed to your insurer just like other medical costs, or covered by the University of California [&laquo;<span class="prompt">if applicable:</span>&raquo; or the study sponsor, &laquo;<span class="prompt">sponsor name</span>&raquo;], depending upon a number of factors. The University and the study sponsor do not normally provide any other form of compensation for injury. For more information in this regard, call OPHS at (510) 642-7461.</p>
+        ]]></value></property>
+        <property name="relevance"><map><entry key="optionalQuestions" value="Injury"></entry></map></property>
+    </bean>
+    
+    <bean id="contactForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textArea" />
+        <constructor-arg value="Contact for Questions" />
+        <constructor-arg value="Who can the participant call with concerns, problems or questions about the study? Include the name of the Principal Investigator, Student Investigator, or designated researcher and their corresponding phone number and email address, in first paragraph below. If there are additional/alternate contacts, list name, role in study, and contact information (including phone and email address) as indicated below." /> 
+        <constructor-arg value="contact" />
+        <property name="defaultText"><value><![CDATA[
+        	<p>If you have any questions or concerns about this study, you may contact _________ at &laquo;<span class="prompt">phone number</span>&raquo; or &laquo;<span class="prompt">email address</span>&raquo;. Or you may contact ____________&laquo;<span class="prompt">list name, role in study, and contact information for any other study personnel or local contacts</span>&raquo;.</p>
+        ]]></value></property>
+    </bean>
+
+    <bean id="cphsNumberForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+        <constructor-arg ref="textField" />
+        <constructor-arg value="CPHS Protocol Number" />
+        <constructor-arg value="If known, what is the CPHS protocol number for the study? (If not known at this time, insert in footer of the Word version of consent form after CPHS number is assigned.)" /> 
+        <constructor-arg value="cphsNumber" />
+    </bean>
+    
+    <bean id="generateDocForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
+    	<constructor-arg ref="yesNoChoice" />
+    	<constructor-arg value="Generate Consent Form" />
+    	<constructor-arg value="Would you like to generate a Word-format consent form now? (You can do this from the home page as well.)" />
+    	<constructor-arg value="generateOnFinish" />
+    </bean>
+
+
+   
+</beans>

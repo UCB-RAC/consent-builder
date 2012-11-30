@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	  http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+
+
+    <bean id="formConfigResource" class="org.springframework.core.io.ClassPathResource">
+        <constructor-arg value="/edu/berkeley/rac/ophs/consentBuilder/formContext.xml" />
+    </bean>
+
+	<bean id="consentDao" class="edu.berkeley.rac.ophs.consentBuilder.service.ConsentDao"
+		p:sessionFactory-ref="sessionFactory" />
+		
+	<bean id="calNetService" class="edu.berkeley.rac.ophs.consentBuilder.service.CalNetService">
+	   <constructor-arg>
+	       <bean class="org.springframework.ldap.core.LdapTemplate">
+	           <constructor-arg>
+	               <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+                      <property name="url" value="ldap://ldap.berkeley.edu:389" />
+                   </bean>
+	           </constructor-arg>
+	       </bean>
+	   </constructor-arg>
+	</bean>
+	
+	<bean id="calNetBaseUrl" class="java.lang.String" >
+	   <constructor-arg value="https://auth.berkeley.edu/cas/" />
+	</bean>
+	
+	
+	
+	
+	<!-- Spring 3.1+ profiles for alternate configurations:
+
+		consentbuilder			// root namespace
+			.authentication		// (branch not yet implemented) various CAS and no-auth options.
+			.persistence		// JPA configurations
+				.h2				// H2-specific configuration
+					.local		// for storage to a persistent local file (still implementing)
+				.oracle			// Oracle-specific configuration
+					.dev		// connection settings for development/test db, hosted on IST Oracle DB
+					.prod		// connection settings for production db
+	 -->
+	
+	<beans profile="consentbuilder.persistence.h2">
+		<bean id="sessionFactory"
+			class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+			p:dataSource-ref="consentBuilderDataSource" 
+			p:packagesToScan="edu.berkeley.rac.ophs.consentBuilder.model" >
+			<property name="hibernateProperties">
+			    <props>
+					<prop key="hibernate.show_sql">true</prop>
+					<prop key="hibernate.hbm2ddl.auto">create</prop>
+		    	</props>
+			</property>
+		</bean>
+	</beans>
+	
+	<beans profile="consentbuilder.persistence.h2.local">
+		<bean id="consentBuilderDataSource" class="org.h2.jdbcx.JdbcDataSource"
+			p:URL="jdbc:h2:mem:vaadinactiviti;DB_CLOSE_DELAY=-1" p:user="sa"
+			p:password="" />
+		<!-- need file path information here -->
+
+	</beans>
+	
+	<beans profile="consentbuilder.persistence.oracle">
+		<bean id="sessionFactory"
+			class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+			p:dataSource-ref="consentBuilderDataSource" 
+			p:packagesToScan="edu.berkeley.rac.ophs.consentBuilder.model" >
+			<property name="hibernateProperties">
+			    <props>
+					<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+					<prop key="hibernate.hbm2ddl.auto">update</prop>
+					<prop key="hibernate.jdbc.use_streams_for_binary">true</prop> <!-- seems to help with Oracle -->
+		    	</props>
+			</property>
+		</bean>
+	    <bean id="oracleDataSource" class="oracle.jdbc.pool.OracleDataSource" destroy-method="close" abstract="true" >
+	        <property name="connectionCachingEnabled" value="true" />
+	        <property name="connectionCacheProperties">
+	            <props>
+	                <prop key="InactivityTimeout">900</prop> <!-- 15 minutes -->
+	                <prop key="ValidateConnection">true</prop>
+	            </props>
+	        </property>
+	    </bean>
+	</beans>
+	
+	<beans profile="consentbuilder.persistence.oracle.dev">
+	    <!-- define consentBuilderDataSource bean here for Oracle development instance -->
+ 		<bean id="consentBuilderDataSource" parent="oracleDataSource" >
+        	<property name="URL" value="jdbc:oracle:thin:@host:1521:SID" />
+        	<property name="user" value="user" />
+        	<property name="password" value="password" />
+    	</bean>
+	</beans>
+	
+	<beans profile="consentbuilder.persistence.oracle.prod">
+        <!-- define consentBuilderDataSource bean here for Oracle production instance -->
+		<bean id="consentBuilderDataSource" parent="oracleDataSource" >
+            <property name="URL" value="jdbc:oracle:thin:@host:1521:SID" />
+            <property name="user" value="user" />
+            <property name="password" value="password" />
+    	</bean>
+	</beans>
+	
+</beans>
