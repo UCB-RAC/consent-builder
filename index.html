@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>UCB RAC Consent Builder by UCB-RAC</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>UCB RAC Consent Builder</h1>
+        <p>UC Berkeley's informed consent wizard web application</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/UCB-RAC/consent-builder" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/UCB-RAC/consent-builder/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/UCB-RAC/consent-builder/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>Goals</h1>
+
+<p>The Consent Builder application is intended to improve the completeness and consistency of consent forms for human-subjects research by guiding researchers through providing study information and then generating a consent form that incorporates that information according to general guidelines.</p>
+
+<p>Our goal was reasonable functionality in a reasonable timeframe rather than covering every possible use case. This meant that we did not try to implement features like a work-sharing model or question list maintenance within the application. We also aim for flexibility by generating an editable document; the application does not need to cover every extraordinary circumstance.</p>
+
+<p>The existing solution was a set of consent form templates which interleaved suggested language and instructions for completing the form. Consent Builder improves on this by separating instructions, supplied answers, and template language, which simplifies instructions and reduces confusion.</p>
+
+<h1>Functionality</h1>
+
+<p>There are two main user interactions with the application: answering questions about the study and requesting a Word (.docx) document download.</p>
+
+<p>The questions are presented in the style of a “wizard,” one at a time and in a linear order. Based on answers to earlier questions, the application can skip some later questions as not relevant. Answers are saved progressively, and a returning user has the option to select an in-progress consent form and continue answering questions where they left off.</p>
+
+<p>At the end of answering questions or from the application home page, a user may download a Word document which connects those answers in standardized language and order.</p>
+
+<h1>Implementation and future work</h1>
+
+<p>The questions, their order, and relevance are defined in an XML document that is maintained by a programmer and compiled into the application. The questions are presented one at a time with links to skip back and forward through the list.</p>
+
+<p>The question maintenance could be improved by taking input from files maintained by a functional owner and transforming to the required XML; significantly more adaptation would be needed to update question definitions without having to re-deploy the application.</p>
+
+<p>One possible UI improvement may be to add a navigation sidebar to the question view, allowing users to go directly to an arbitrary relevant question.</p>
+
+<p>The Word document is created using a third-party library (docx4j). The document construction is defined in the application code and requires programmer intervention and re-deploying the application to change the document output. Inserting headers and paragraph text is straightforward, but developers wanting to include other Word features such as tables will need to be comfortable with WordML.</p>
+
+<p>There may be options for allowing functional owners to work more directly on the output document, including use of Word Content Controls or a template language such as FreeMarker.</p>
+
+<h1>Technical details</h1>
+
+<p>We use freely-available packages for data persistence (Hibernate), client-server communication (Vaadin), model/view/presentation separation (MVP4Vaadin), and Word document creation (docx4j). The question list is defined in Spring configuration, with question relevance checking that accepts either simple text-matching or Spring Expression Language expressions over the answers given by users to previous questions. Our own code is written in Scala, which provides some useful flexibility but also has some awkward edge conditions where it interacts with Java code in the supporting libraries.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/UCB-RAC">UCB-RAC</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
