@@ -1,0 +1,15 @@
+# UCB Consent Builder properties file
+# 
+# 
+
+consent.cas.URL=https://auth.example.edu/cas/
+
+consent.ldap.URL=ldap://ldap.example.edu:389
+
+consent.oracle.dev.URL=jdbc:oracle:thin:@oracle.example.edu:1521:dev
+consent.oracle.dev.user=
+consent.oracle.dev.password=
+
+consent.oracle.prod.URL=jdbc:oracle:thin:@oracle.example.edu:1521:prod
+consent.oracle.prod.user=
+consent.oracle.prod.password=

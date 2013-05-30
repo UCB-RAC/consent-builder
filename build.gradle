@@ -31,7 +31,12 @@ dependencies {
 	compile 'org.vaadin.addons:stuff4vaadin:0.0.1'
 	compile 'org.vaadin.addons:i18n4vaadin:0.9.1'
 	
-	compile 'org.hibernate:hibernate-core:4.1.6.Final'
+	// Persistence
+//	compile 'org.hibernate:hibernate-core:4.1.6.Final'
+	compile 'org.hibernate:hibernate-core:3.6.9.Final'
+	runtime 'javassist:javassist:3.12.1.GA'
+	runtime 'com.h2database:h2:1.3.168'
+	runtime 'com.oracle:oracle-jdbc6:11.2.0.3'
 	
 	def springVersion = '3.1.2.RELEASE'
 	compile "org.springframework:spring-context:${springVersion}"
@@ -46,9 +51,6 @@ dependencies {
 	}
 	
 	compile 'org.docx4j:docx4j:2.8.0'
-	
-	runtime 'com.h2database:h2:1.3.168'
-	runtime 'com.oracle:oracle-jdbc6:11.2.0.3'
 
 	def gwtVersion = '2.4.0'
 	gwt "com.google.gwt:gwt-dev:${gwtVersion}"
@@ -100,7 +102,8 @@ task compileGwt (dependsOn: classes, type: JavaExec) {
  
 war.dependsOn compileGwt
 war {
-	from compileGwt.buildDir
+//	from compileGwt.buildDir
+    from "${project.buildDir}/war"
 }
 
 // render the list of questions to HTML
