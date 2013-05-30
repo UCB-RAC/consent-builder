@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-	  http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	    http://www.springframework.org/schema/context
+	        http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-
+	<context:property-placeholder location="classpath:/edu/berkeley/rac/ophs/consentBuilder/consent-builder.properties"/>
 
     <bean id="formConfigResource" class="org.springframework.core.io.ClassPathResource">
         <constructor-arg value="/edu/berkeley/rac/ophs/consentBuilder/formContext.xml" />
@@ -19,7 +22,7 @@
 	       <bean class="org.springframework.ldap.core.LdapTemplate">
 	           <constructor-arg>
 	               <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
-                      <property name="url" value="ldap://ldap.berkeley.edu:389" />
+                      <property name="url" value="${consent.ldap.URL}" />
                    </bean>
 	           </constructor-arg>
 	       </bean>
@@ -27,7 +30,7 @@
 	</bean>
 	
 	<bean id="calNetBaseUrl" class="java.lang.String" >
-	   <constructor-arg value="https://auth.berkeley.edu/cas/" />
+	   <constructor-arg value="${consent.cas.URL}" />
 	</bean>
 	
 	
@@ -94,18 +97,18 @@
 	<beans profile="consentbuilder.persistence.oracle.dev">
 	    <!-- define consentBuilderDataSource bean here for Oracle development instance -->
  		<bean id="consentBuilderDataSource" parent="oracleDataSource" >
-        	<property name="URL" value="jdbc:oracle:thin:@host:1521:SID" />
-        	<property name="user" value="user" />
-        	<property name="password" value="password" />
+        	<property name="URL" value="${consent.oracle.dev.URL}" />
+        	<property name="user" value="${consent.oracle.dev.user}" />
+        	<property name="password" value="${consent.oracle.dev.password}" />
     	</bean>
 	</beans>
 	
 	<beans profile="consentbuilder.persistence.oracle.prod">
         <!-- define consentBuilderDataSource bean here for Oracle production instance -->
 		<bean id="consentBuilderDataSource" parent="oracleDataSource" >
-            <property name="URL" value="jdbc:oracle:thin:@host:1521:SID" />
-            <property name="user" value="user" />
-            <property name="password" value="password" />
+        	<property name="URL" value="${consent.oracle.prod.URL}" />
+        	<property name="user" value="${consent.oracle.prod.user}" />
+        	<property name="password" value="${consent.oracle.prod.password}" />
     	</bean>
 	</beans>
 	
