@@ -90,10 +90,15 @@ class SingleQuestionForm(field: Field, title: String, explanation: String, answe
 	  propertyExpression setValue(consent, answer)
 	}
 	
-	def getAnswer =
+	def getAnswer: ConsentAnswer =
 	  field getValue match
 	  {
-	    case null => null
+	    case null =>
+	      {
+	        val answer = new ConsentAnswer
+	        answer setValue null
+	        answer
+	      }
 	    case text =>
 	      {
 	        val answer: ConsentAnswer = text toString;

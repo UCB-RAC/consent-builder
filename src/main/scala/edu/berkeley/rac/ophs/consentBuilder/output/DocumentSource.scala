@@ -70,7 +70,10 @@ class DocumentSource(formList: FormList, consent: Consent) extends StreamSource 
   if (!(formList isCurrent consent))
     throw new IllegalArgumentException("Some consent answers are out of date")
     
-  
+  /*
+   * TODO: convert this direct access to the consent textanswers map into calls to the local getAnswer,
+   *     which calls the consent#getAnswerText wrapper method.
+   */
   val answers = consent getTextAnswers
   
   val wordMLPackage = 
@@ -96,7 +99,7 @@ class DocumentSource(formList: FormList, consent: Consent) extends StreamSource 
   addStyledParagraph(
     "Title"
     , (answers get "studyTitle") +
-      (Option(answers get "studySubtitle") match
+      (getAnswer("studySubtitle") match
       {
         case Some(answer) => " (" + answer + ")"
         case None => ""
@@ -349,7 +352,7 @@ class DocumentSource(formList: FormList, consent: Consent) extends StreamSource 
   
   private def addHTMLAnswer(key: String)
   {
-    Option(answers get key) match
+    getAnswer(key) match
     {
       case None => {}
       case Some(answer) => addHTMLSnippet(answer, key, false) 
@@ -388,6 +391,8 @@ class DocumentSource(formList: FormList, consent: Consent) extends StreamSource 
 	ac setId (altChunkRel getId)
 	mainPart addObject ac 
   }
+  
+  private def getAnswer(key: String): Option[String] = consent getAnswerText key
   
 //  private def insertOPHSNumber: WordprocessingMLPackage
 //  {

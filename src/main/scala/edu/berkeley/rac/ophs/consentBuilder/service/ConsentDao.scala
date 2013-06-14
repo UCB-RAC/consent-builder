@@ -35,11 +35,11 @@ import scala.collection.mutable.Buffer
 class ConsentDao extends HibernateDaoSupport {
 
 	def save(consent: Consent) {
-		getHibernateTemplate.saveOrUpdate(consent)
+	    getHibernateTemplate.saveOrUpdate(consent)
 	}
 	
 	def getUserConsents(uid: String): Buffer[Consent] = {
-		val query = "from edu.berkeley.rac.ophs.consentBuilder.model.Consent where creator = ?"
+		val query = "from edu.berkeley.rac.ophs.consentBuilder.model.Consent where creator = ? order by id desc"
 		getHibernateTemplate.find(query, uid).asInstanceOf[java.util.List[Consent]]
 	}
   

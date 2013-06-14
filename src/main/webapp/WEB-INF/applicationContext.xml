@@ -77,6 +77,7 @@
 			p:packagesToScan="edu.berkeley.rac.ophs.consentBuilder.model" >
 			<property name="hibernateProperties">
 			    <props>
+			    	<prop key="hibernate.show_sql">true</prop>
 					<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
 					<prop key="hibernate.hbm2ddl.auto">update</prop>
 					<prop key="hibernate.jdbc.use_streams_for_binary">true</prop> <!-- seems to help with Oracle -->

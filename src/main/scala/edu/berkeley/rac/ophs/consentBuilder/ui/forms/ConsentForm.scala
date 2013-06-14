@@ -81,17 +81,16 @@ trait ConsentForm extends Component with BeanNameAware
       }
       else
       {
-        val blank: ConsentAnswer = ""
         relevanceTest =
           (consent: Consent) => 
             relevanceMap forall (
               {
                 case (key: String, value: String) =>
                 {
-                  (consent getTextAnswers) getOrElse(key, blank) getValue match
+                  consent getAnswerText key match
                   {
-                    case null => false
-                    case str => str contains value
+                    case None => false
+                    case Some(str) => str contains value
                   }
                 }
               }
@@ -106,11 +105,11 @@ trait ConsentForm extends Component with BeanNameAware
 	  Option(asOfTimestamp) match
 	  {
 	    case None => true
-	    case Some(timestamp) => 
-	      Option((consent getTextAnswers) get formKey) match
+	    case Some(timestamp) =>
+	      consent getAnswerTimestamp formKey match
 	      {
 	        case None => false
-	        case Some(answer) => ((answer getTimestamp) compareTo timestamp) >= 0
+	        case Some(savedTime) => (savedTime compareTo timestamp) >= 0
 	      }
 	  }
 		

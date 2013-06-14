@@ -38,6 +38,9 @@ import javax.persistence.Lob
 import javax.persistence.OneToMany
 import javax.persistence.FetchType.EAGER
 
+object Consent {
+  val DATE_FORMAT = java.text.DateFormat getDateInstance
+}
 
 @Entity
 class Consent {
@@ -69,56 +72,58 @@ class Consent {
     )
   //@MapKeyColumn(name = "TEXTANSWERS_KEY", insertable = false, updatable = false)
   @BeanProperty
-  var textAnswers: java.util.Map[String, ConsentAnswer] = new java.util.HashMap()
+  var textAnswers: java.util.Map[String, ConsentAnswer] = new java.util.HashMap[String, ConsentAnswer]
   
   def setDisplayTitle: Unit = {}
   def getDisplayTitle: String =
-    textAnswers.getOrElse[ConsentAnswer]("studyTitle", "(no title)") + 
-    (Option(textAnswers.get("studySubtitle")) match
+    (getAnswerText("studyTitle") match
+    {
+      case None => "(no title)"
+      case Some(title) => title
+    }) + (getAnswerText("studySubtitle") match
     {
       case None => ""
       case Some(subtitle) => ": " + subtitle
     })
   
-  def getDisplayTime: String =
+  def getDisplayDate: String =
     getDateModified match
     {
       case null => ""
-      case date => date toString
+      case date => Consent.DATE_FORMAT format date
     }
     
   def getDateModified: java.util.Date =
-//    (textAnswers values) maxBy (_ getTimestamp) getTimestamp
-//      (textAnswers values) map 
-//      (answer => Option(answer getTimestamp)) foldLeft[Option[java.util.Date]](None)(
-//        (_,_) match
-//        {
-//          case (None, Some(date)) => Some(date)
-//          case (Some(date), None) => Some(date)
-//          case (Some(maxdate), Some(date)) => Option(List(maxdate, date) max)
-//        })
-  {
-    (textAnswers values) match
-    {
-      case null => null
-      case answers =>
-        answers map (_ getTimestamp) reduce ((acc, date) => acc match
+    ((textAnswers values).foldLeft[Option[java.util.Date]](None)(
+        (acc, curr) => (acc, Option(curr getTimestamp)) match
         {
-          case null => date
-          case _ => date match
-          {
-            case null => acc
-            case _ => List(acc, date) max
-          }
+          case (None, None) => None
+          case (None, Some(date)) => Some(date)
+          case (Some(maxdate), None) => Some(maxdate)
+          case (Some(maxdate), Some(date)) => Option(List(maxdate, date) max)
         }
-       )
+        )) match
+        {
+          case None => null
+          case Some(date) => date
+        }
+  
+  def getAnswerText(key: String): Option[String] =
+    textAnswers get key match
+    {
+      case null => None
+      case answer => (answer toString) trim match
+      {
+        case "" => None
+        case trimmed => Option(trimmed)
+      }
     }
-    
-  }
-    
-//  @ElementCollection(fetch = EAGER)
-//  @CollectionTable(name = "CONSENT_PEOPLE", joinColumns = Array(new JoinColumn(name = "CONSENT_ID")))
-//  @BeanProperty
-//  var people: java.util.List[ConsentPerson] = new java.util.ArrayList()
-
+  
+  def getAnswerTimestamp(key: String): Option[java.util.Date] =
+    textAnswers get key match
+    {
+      case null => None
+      case answer => Option(answer getTimestamp)
+    }
+  
 }
