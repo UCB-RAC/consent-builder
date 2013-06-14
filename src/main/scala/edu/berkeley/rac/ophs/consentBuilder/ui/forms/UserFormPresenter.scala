@@ -120,19 +120,8 @@ class UserFormPresenter(application: ConsentBuilderApplication, view: UserFormVi
 	    case None =>
 	    {
 	      println("End of wizard")
-	      doEndOfList()
-//	      val answers = consent getTextAnswers;
-//	      answers get("generateOnFinish") match
-//	      {
-//	        case null => {}
-//	        case answer => 
-//	        {
-//	          println ("generateOnFinish: " + answer)
-//	          if (answer contains "Yes") exportDocx (application, consent)
-//	          answers.remove("generateOnFinish")
-//	        }
-//	      }
-	      getViewController goBack
+	      doEndOfList
+//	      getViewController goBack
 	    }
 	  }
 	}
@@ -180,17 +169,16 @@ class UserFormPresenter(application: ConsentBuilderApplication, view: UserFormVi
 	
 	private def doEndOfList()
 	{
-	      val answers = consent getTextAnswers;
-	      answers get("generateOnFinish") match
+	      consent getAnswerText "generateOnFinish" match
 	      {
-	        case null => {}
-	        case answer => 
+	        case None => {}
+	        case Some(answer) => 
 	        {
 	          println ("generateOnFinish: " + answer)
 	          if (answer contains "Yes") exportDocx (application, consent)
-	          answers.remove("generateOnFinish")
+	          (consent getTextAnswers) remove "generateOnFinish"
 	        }
-	      getViewController goBack
 	      }
+	      getViewController goBack
 	}
 }

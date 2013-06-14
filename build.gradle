@@ -2,6 +2,7 @@
 
 apply plugin: 'scala'
 apply plugin: 'war'
+apply plugin: 'eclipse'
 
 repositories {
 	maven { url "http://128.32.16.155/nexus/content/groups/public/" }
@@ -17,7 +18,7 @@ configurations {
 
 dependencies {
 
-	def scalaVersion = '2.9.2'
+	def scalaVersion = '2.9.3'
     // Libraries needed to run the scala tools
     scalaTools "org.scala-lang:scala-compiler:${scalaVersion}"
 	
