@@ -67,7 +67,7 @@ class HomeViewImpl(viewProvider: ViewProvider, application: ConsentBuilderApplic
 
     override def getDisplayName = "Home"
 
-    override def getDescription = "The starting point of Vaadin Activiti Demo"
+    override def getDescription = "Consent Builder Home"
 
     protected override def createPresenter() = new HomePresenter(this, application)
 
@@ -99,15 +99,15 @@ class HomeViewImpl(viewProvider: ViewProvider, application: ConsentBuilderApplic
 		consentTable.setContainerDataSource(dataSource)
 //		consentTable.setColumnHeader("creator", "Author")
 		consentTable.setColumnHeader("displayTitle", "Title")
-		consentTable.setColumnHeader("dateModified", "Last Modified")
-		consentTable.setVisibleColumns(Array(/*"creator", "displayTitle", */"dateModified"))
+		consentTable.setColumnHeader("displayDate", "Last Modified")
+		consentTable.setVisibleColumns(Array(/*"creator",*/ "displayTitle", "displayDate"))
 		consentTable.setWidth("100%")
 		consentTable.setSelectable(true)
 		consentTable.setImmediate(true)
 		consentTable.setNullSelectionAllowed(false) // to disable deselect when clicking selected consent
 		consentTable.setColumnReorderingAllowed(true)
 				
-//		viewLayout.addComponent(consentTable)
+		viewLayout.addComponent(consentTable)
 		
 		val buttonBar = new HorizontalLayout()
 		buttonBar.setSpacing(true)
