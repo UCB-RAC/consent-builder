@@ -47,6 +47,8 @@ class ConsentAnswer extends CharSequence
   @Temporal(TemporalType.TIMESTAMP)
   var timestamp: java.util.Date = _
   
+  def getSafeValue: String = if (value == null) "" else value 
+  
   override def toString = value
   
   def subSequence(a: Int, b: Int) = value subSequence(a, b)

@@ -46,7 +46,16 @@ trait DocumentDownloader {
 	        application.getFormContext.getBean("formList").asInstanceOf[FormList], 
 	        consent
 	        )
-	    val streamResource: StreamResource = new StreamResource(documentSource, ((consent getTextAnswers) get("studyTitle")) + ".docx", application)
+	    val streamResource: StreamResource = 
+	      new StreamResource(
+	        documentSource,
+	        (consent getAnswerText "studyTitle" match
+	        {
+  	          case None => "Untitled"
+	          case Some(title) => title
+	        }) + ".docx",
+	        application
+	        )
 	  
 	    streamResource setMIMEType "application/octet-stream"
 	    val dlstream: DownloadStream = streamResource getStream()
