@@ -29,15 +29,14 @@ package edu.berkeley.rac.ophs.consentBuilder.service
 import org.springframework.ldap.core.LdapTemplate
 import org.springframework.ldap.core.ContextMapper
 import org.springframework.ldap.core.DirContextAdapter
+import scala.collection.JavaConversions._
 
 
-class CalNetService(ldapTemplate: LdapTemplate) {
+class LdapDirectoryService(ldapTemplate: LdapTemplate) {
   
   def NO_AUTH = "!unauthenticated"
+    
   val NO_AUTH_DISPLAY = ("No", "User")
-  val calNetPeopleSearchBase = "ou=people,dc=berkeley,dc=edu"
-  val calNetGuestsSearchBase = "ou=guests,dc=berkeley,dc=edu"
-  val searchBases = List(calNetPeopleSearchBase, calNetGuestsSearchBase)
   val ctxNameMapper: ContextMapper = new ContextMapper(){
     override def mapFromContext(ctx: Any): (String, String) =
       ctx match 
@@ -50,6 +49,9 @@ class CalNetService(ldapTemplate: LdapTemplate) {
       }
   }
   
+  var searchBase: Iterable[String] = _
+  def setSearchBase(baselist: java.util.List[String]) { searchBase = baselist } 
+  
   def getUserInfo(uid: String): (String /*first name*/, String /*last name*/) =
 
     if (uid == NO_AUTH)
@@ -57,12 +59,12 @@ class CalNetService(ldapTemplate: LdapTemplate) {
     else
     {
       val filter = "(uid=%s)".format(uid)
-      searchBases.foldLeft[(String, String)](("", "")) {
+      searchBase.foldLeft[(String, String)](("", "")) {
         (acc, base) =>
           {
             (try 
               Some( ldapTemplate.searchForObject(base, filter, ctxNameMapper) )
-            catch 
+             catch 
               { case erdae: org.springframework.dao.EmptyResultDataAccessException => None }
             ) match
             {

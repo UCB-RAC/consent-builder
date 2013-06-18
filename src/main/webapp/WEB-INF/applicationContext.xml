@@ -17,19 +17,29 @@
 	<bean id="consentDao" class="edu.berkeley.rac.ophs.consentBuilder.service.ConsentDao"
 		p:sessionFactory-ref="sessionFactory" />
 		
-	<bean id="calNetService" class="edu.berkeley.rac.ophs.consentBuilder.service.CalNetService">
+	<bean id="directoryService" class="edu.berkeley.rac.ophs.consentBuilder.service.LdapDirectoryService">
 	   <constructor-arg>
-	       <bean class="org.springframework.ldap.core.LdapTemplate">
-	           <constructor-arg>
-	               <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
-                      <property name="url" value="${consent.ldap.URL}" />
-                   </bean>
-	           </constructor-arg>
-	       </bean>
+	      <bean class="org.springframework.ldap.core.LdapTemplate">
+	         <constructor-arg>
+	            <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+                   <property name="url" value="${consent.ldap.URL}" />
+                </bean>
+	         </constructor-arg>
+	      </bean>
 	   </constructor-arg>
+	   <property name="searchBase">
+           <bean class="org.springframework.util.CollectionUtils" factory-method="arrayToList">
+               <constructor-arg type="java.lang.Object">
+                   <bean class="org.springframework.util.StringUtils" factory-method="tokenizeToStringArray">
+                       <constructor-arg type="java.lang.String" value="${consent.ldap.searchbase}"/>
+                       <constructor-arg type="java.lang.String" value=" "/>
+                   </bean>
+               </constructor-arg>
+           </bean>
+       </property>
 	</bean>
 	
-	<bean id="calNetBaseUrl" class="java.lang.String" >
+	<bean id="casBaseUrl" class="java.lang.String" >
 	   <constructor-arg value="${consent.cas.URL}" />
 	</bean>
 	
