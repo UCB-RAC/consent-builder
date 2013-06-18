@@ -35,28 +35,42 @@ class CalNetService(ldapTemplate: LdapTemplate) {
   
   def NO_AUTH = "!unauthenticated"
   val NO_AUTH_DISPLAY = ("No", "User")
-  
-  def getUserInfo(uid: String): (String /*first name*/, String /*last name*/) = {
-
-    if (uid == NO_AUTH) NO_AUTH_DISPLAY else
-    {
-      val calNetSearchBase = "ou=people,dc=berkeley,dc=edu"
-      val filter = "(uid=%s)".format(uid)
-      
-      ldapTemplate.searchForObject(calNetSearchBase, filter, new ContextMapper() {
-	    override def mapFromContext(ctx: Any): (String, String) = {
-	      ctx match {
-	        case context: DirContextAdapter => {
-	          (context getStringAttribute "givenName", context getStringAttribute "sn")
-	        }
-	        case _ => {
-	          throw new RuntimeException("Cannot handle LDAP search result object of type " + ctx.getClass)
-	        }
-	      }
-	    }
-	  }).asInstanceOf[(String, String)]
-    }
-
+  val calNetPeopleSearchBase = "ou=people,dc=berkeley,dc=edu"
+  val calNetGuestsSearchBase = "ou=guests,dc=berkeley,dc=edu"
+  val searchBases = List(calNetPeopleSearchBase, calNetGuestsSearchBase)
+  val ctxNameMapper: ContextMapper = new ContextMapper(){
+    override def mapFromContext(ctx: Any): (String, String) =
+      ctx match 
+      {
+        case context: DirContextAdapter => 
+          (context getStringAttribute "givenName", context getStringAttribute "sn")
+        case _ =>
+          throw new RuntimeException(
+              "Cannot handle LDAP search result object of type " + ctx.getClass)
+      }
   }
-	
+  
+  def getUserInfo(uid: String): (String /*first name*/, String /*last name*/) =
+
+    if (uid == NO_AUTH)
+      NO_AUTH_DISPLAY
+    else
+    {
+      val filter = "(uid=%s)".format(uid)
+      searchBases.foldLeft[(String, String)](("", "")) {
+        (acc, base) =>
+          {
+            (try 
+              Some( ldapTemplate.searchForObject(base, filter, ctxNameMapper) )
+            catch 
+              { case erdae: org.springframework.dao.EmptyResultDataAccessException => None }
+            ) match
+            {
+              case Some(name) => name.asInstanceOf[(String, String)]
+              case None => acc
+            }
+          }
+      }
+    }
+  
 }
