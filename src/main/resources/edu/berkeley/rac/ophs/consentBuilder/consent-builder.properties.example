@@ -5,6 +5,8 @@
 consent.cas.URL=https://auth.example.edu/cas/
 
 consent.ldap.URL=ldap://ldap.example.edu:389
+# multiple LDAP search bases are supported as a space-separated list
+consent.ldap.searchbase=ou=people,dc=example,dc=edu ou=guests,dc=example,dc=edu
 
 consent.oracle.dev.URL=jdbc:oracle:thin:@oracle.example.edu:1521:dev
 consent.oracle.dev.user=

@@ -28,7 +28,6 @@ package edu.berkeley.rac.ophs.consentBuilder
 
 import scala.collection.JavaConversions._
 import java.net.URL
-
 import com.vaadin.Application
 import com.vaadin.ui.Window
 import com.vaadin.terminal.DownloadStream
@@ -44,14 +43,14 @@ import org.springframework.context.support.GenericXmlApplicationContext
 import com.github.peholmst.mvp4vaadin.ViewListener
 import com.github.peholmst.mvp4vaadin.navigation.DefaultViewProvider
 import com.github.peholmst.mvp4vaadin.ViewEvent
-
 import edu.berkeley.rac.ophs.consentBuilder.ui.login.LoginViewImpl
 import edu.berkeley.rac.ophs.consentBuilder.ui.forms.UserFormView
 import edu.berkeley.rac.ophs.consentBuilder.ui.forms.UserFormViewImpl
 import edu.berkeley.rac.ophs.consentBuilder.ui.main.MainViewImpl
-import edu.berkeley.rac.ophs.consentBuilder.service.CalNetService
+import edu.berkeley.rac.ophs.consentBuilder.service.LdapDirectoryService
 import edu.berkeley.rac.ophs.consentBuilder.ui.main.UserLoggedOutEvent
 import edu.berkeley.rac.ophs.consentBuilder.service.ConsentDao
+import scala.reflect.BeanProperty
 
 
 class ConsentBuilderApplication extends Application with ViewListener {
@@ -63,9 +62,10 @@ class ConsentBuilderApplication extends Application with ViewListener {
 	private var applicationContext: ApplicationContext = _
 	private val formContext = new GenericXmlApplicationContext
 	private var consentDao: ConsentDao = _
+	private var casBaseUrl: String = _
 	
 	private var authentication: Boolean = _
-
+	
 	def getFormContext = formContext
 	
 	override def init = {
@@ -77,9 +77,6 @@ class ConsentBuilderApplication extends Application with ViewListener {
 	  	val servletContext = getContext.asInstanceOf[WebApplicationContext].getHttpSession.getServletContext
 		applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext)
 	
-		val calNetBaseUrl = applicationContext.getBean("calNetBaseUrl").asInstanceOf[String]
-		casTicketValidator = new Cas20ServiceTicketValidator(calNetBaseUrl)
-		
 		consentDao = applicationContext.getBean("consentDao").asInstanceOf[ConsentDao]
 		
 		formContext.load(applicationContext.getBean("formConfigResource").asInstanceOf[Resource])
@@ -88,11 +85,13 @@ class ConsentBuilderApplication extends Application with ViewListener {
 	  	
 	  	if (authentication)
 	  	{
-	  	  createAndShowLoginWindow(calNetBaseUrl)
+	  	  casBaseUrl = applicationContext.getBean("casBaseUrl").asInstanceOf[String]
+	  	  casTicketValidator = new Cas20ServiceTicketValidator(casBaseUrl)
+	  	  createAndShowLoginWindow(casBaseUrl)
 	  	}
 	  	else
 	  	{
-	  	  setUser(getCalNetService.NO_AUTH)
+	  	  setUser(getDirectoryService.NO_AUTH)
 	  	  createAndShowMainWindow
 	  	}
 		
@@ -147,10 +146,6 @@ class ConsentBuilderApplication extends Application with ViewListener {
 
 	private def createAndInitViewProvider = {
 		viewProvider = new DefaultViewProvider()
-//		viewProvider.addPreinitializedView(new MyTasksViewImpl(this), MyTasksView.VIEW_ID)
-//		viewProvider.addPreinitializedView(new UnassignedTasksViewImpl(this), UnassignedTasksView.VIEW_ID)
-//		viewProvider.addPreinitializedView(new ProcessViewImpl(), ProcessView.VIEW_ID)
-//		viewProvider.addPreinitializedView(new IdentityManagementViewImpl(), IdentityManagementView.VIEW_ID)
 		viewProvider.addPreinitializedView(new UserFormViewImpl(this), UserFormView.VIEW_ID)
 	}
 
@@ -160,7 +155,7 @@ class ConsentBuilderApplication extends Application with ViewListener {
 		}
 	}
 	
-	def getCalNetService = applicationContext.getBean("calNetService", classOf[CalNetService])
+	def getDirectoryService = applicationContext.getBean("directoryService", classOf[LdapDirectoryService])
 
 	def getConsentDao = consentDao
 

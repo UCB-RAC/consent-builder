@@ -52,7 +52,7 @@ class MainPresenter(view: MainView, application: ConsentBuilderApplication, view
 
 	def getNameOfCurrentUser = {
 		val currentUserId = application.getUser().asInstanceOf[String]
-		val userInfo = application.getCalNetService.getUserInfo(currentUserId)
+		val userInfo = application.getDirectoryService.getUserInfo(currentUserId)
 		String.format("%s %s", userInfo._1, userInfo._2)
 	}
 
