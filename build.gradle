@@ -103,7 +103,6 @@ task compileGwt (dependsOn: classes, type: JavaExec) {
  
 war.dependsOn compileGwt
 war {
-//	from compileGwt.buildDir
     from "${project.buildDir}/war"
 }
 
