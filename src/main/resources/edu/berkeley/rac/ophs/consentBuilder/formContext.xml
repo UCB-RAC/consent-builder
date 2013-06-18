@@ -163,7 +163,7 @@
 		<constructor-arg value="Optional Information" />
 	 	<constructor-arg value="Select any of the following study aspects that apply." />
 	 	<constructor-arg value="optionalQuestions"></constructor-arg>
-	 	<!--  <property name="relevance"><map><entry key="SpelExpression" value="!(textAnswers['researchType'].getSafeValue().contains('Biomedical'))" /></map></property>  -->
+	 	<!--  <property name="relevance"><map><entry key="SpelExpression" value="!(textAnswers['researchType'].safeValue().contains('Biomedical'))" /></map></property>  -->
 	</bean>
 
 	<bean id="studyTitleForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
@@ -236,7 +236,7 @@
         <property name="defaultText">
         	<value><![CDATA[<p>The purpose of this research study is to </p>]]></value>
         </property>
-        <property name="relevance"><map><entry key="SpelExpression" value="textAnswers['researchType'] == null or !textAnswers['researchType'].getSafeValue.contains('Biomedical')" /></map></property>
+        <property name="relevance"><map><entry key="SpelExpression" value="textAnswers['researchType'] == null or !textAnswers['researchType'].safeValue.contains('Biomedical')" /></map></property>
     </bean>
     
     <bean id="purposeFormMed" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
