@@ -27,7 +27,7 @@
 package edu.berkeley.rac.ophs.consentBuilder.ui.forms
 
 import edu.berkeley.rac.ophs.consentBuilder.model.Consent
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 
 
 abstract class Transition {

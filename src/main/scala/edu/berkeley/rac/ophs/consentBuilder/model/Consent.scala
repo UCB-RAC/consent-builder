@@ -26,7 +26,7 @@
 
 package edu.berkeley.rac.ophs.consentBuilder.model
 
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 import scala.collection.JavaConversions._
 import javax.persistence.CollectionTable
 import javax.persistence.ElementCollection

@@ -50,7 +50,7 @@ import edu.berkeley.rac.ophs.consentBuilder.ui.main.MainViewImpl
 import edu.berkeley.rac.ophs.consentBuilder.service.LdapDirectoryService
 import edu.berkeley.rac.ophs.consentBuilder.ui.main.UserLoggedOutEvent
 import edu.berkeley.rac.ophs.consentBuilder.service.ConsentDao
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 
 
 class ConsentBuilderApplication extends Application with ViewListener {

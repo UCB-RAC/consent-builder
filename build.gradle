@@ -1,14 +1,16 @@
-//ant.importBuild 'build.xml'
-
 apply plugin: 'scala'
 apply plugin: 'war'
 apply plugin: 'eclipse'
 
 repositories {
-//	maven { url "http://128.32.16.155/nexus/content/groups/public/" }
-//	maven { url "http://128.32.16.155/nexus/content/repositories/external-non-free/" }
 	maven { url "http://devtools.rac.berkeley.edu/nexus/content/groups/public/" }
-	maven { url "http://devtools.rac.berkeley.edu/nexus/content/repositories/external-non-free/" }
+	maven {
+        url "http://devtools.rac.berkeley.edu/nexus/content/repositories/external-non-free/"
+        credentials {
+            username nexusUser
+            password nexusPassword
+        }
+    }
 	maven { url "http://maven.vaadin.com/vaadin-addons/" }
 }
 
@@ -20,9 +22,7 @@ configurations {
 
 dependencies {
 
-	def scalaVersion = '2.9.3'
-    // Libraries needed to run the scala tools
-    scalaTools "org.scala-lang:scala-compiler:${scalaVersion}"
+	def scalaVersion = '2.11.11'
 	
     // Libraries needed for scala api
     compile "org.scala-lang:scala-library:${scalaVersion}"
@@ -125,10 +125,10 @@ buildscript {
 	}
 }
 
-apply plugin: 'license'
-
-license {
-	mapping {
-		scala = 'SLASHSTAR_STYLE'
-	}
-}
+//apply plugin: 'license'
+//
+//license {
+//	mapping {
+//		scala = 'SLASHSTAR_STYLE'
+//	}
+//}

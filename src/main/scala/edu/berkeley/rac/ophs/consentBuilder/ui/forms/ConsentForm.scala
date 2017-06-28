@@ -34,7 +34,7 @@ import com.vaadin.ui.Component
 import edu.berkeley.rac.ophs.consentBuilder.model.Consent
 import javax.persistence.Entity
 import edu.berkeley.rac.ophs.consentBuilder.model.ConsentAnswer
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 
 
 trait ConsentForm extends Component with BeanNameAware

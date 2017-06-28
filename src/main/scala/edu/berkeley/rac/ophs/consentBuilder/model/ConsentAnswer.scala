@@ -31,7 +31,7 @@ import javax.persistence.Embeddable
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.Lob
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 import javax.persistence.Temporal
 import javax.persistence.TemporalType
 

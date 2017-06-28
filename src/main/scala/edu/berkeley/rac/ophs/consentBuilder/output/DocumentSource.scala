@@ -204,9 +204,14 @@ class DocumentSource(formList: FormList, consent: Consent) extends StreamSource 
   
   addStyledParagraph("Heading1", "Benefits")
   
+  val optionalQs = answers get "optionalQuestions"
+  val hasDirectBenefits = optionalQs != null && (optionalQs contains "DirectBenefits")
   addHTMLSnippet(
     (new HTMLSection())
-      addHTMLAnswer("benefitP")
+      if (hasDirectBenefits)
+        addHtmlAnswer("benefitP")
+      else
+        addParagraph("There is no direct benefit to you expected from taking part in this study.")
       addHTMLAnswer("benefitS")
       asHTML,
     "Benefits",

@@ -26,7 +26,7 @@
 
 package edu.berkeley.rac.ophs.consentBuilder.ui.forms
 
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 
 
 class CaptionedOption(key: String, value: String) {

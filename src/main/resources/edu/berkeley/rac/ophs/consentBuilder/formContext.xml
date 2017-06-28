@@ -453,11 +453,12 @@
     <bean id="procFocusGroupForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
         <constructor-arg ref="textArea" />
         <constructor-arg value="Social-Behavioral Procedures: Focus Groups" />
-        <constructor-arg value="Provide a description below." />
+        <constructor-arg value="Provide a description below. Also, because there are special confidentiality considerations when a study involves focus groups, a statement such as the one below should be added here:" />
         <constructor-arg value="procFocusGroup" />
         <property name="defaultText">
         	<value><![CDATA[
         	<p>You will ...</p>
+            <p>Note: We [The focus group facilitator(s) and note-taker(s)] will treat all discussion and information shared during the focus group(s) as confidential, and we will strongly encourage all participants to do likewise. However, please be aware that we cannot ensure that participants will not disclose any information obtained during a focus group.</p>
 			]]></value>
         </property>
         <property name="relevance"><map><entry key="procSB" value="Focus" /></map></property>
@@ -794,14 +795,16 @@
         <constructor-arg ref="textArea" />
         <constructor-arg value="Data Collection/Identification" />
         <constructor-arg><value><![CDATA[
-         	<p>How will data be collected/de-identified to protect confidentiality? <em>Choose the measure(s) you will use and edit appropriately.</em></p>
+         	<p>How will data be collected/de-identified to protect confidentiality? <em>Choose the measure(s) you will use and edit appropriately, or insert other accurate text.</em></p>
          	<p>See <a href="http://cphs.berkeley.edu/datasecurity.html">CPHS Data Security Policy</a> for further detail about subject confidentiality.</p> 
 			<p>Note:  Since there is no legal privilege between investigator and subject, a guarantee of complete/strict confidentiality should not be given or implied in the form.</p> 
 		]]></value></constructor-arg>
         <constructor-arg value="dataID" />
         <property name="defaultText"><value><![CDATA[
-        	<p>The data will be collected anonymously. We will not maintain a link between your identity and the research data.</p> 
+        	<p>When we collect data, it will be coded, and the key to the code will be kept separately.</p>
+            <p>We will not maintain a link between your identity and the research data.</p>
 			<p>Personal identifiers will be removed &laquo;<span class="prompt">state point in study when this will occur, e.g., "immediately after audio recordings have been transcribed."</span>&raquo;</p>
+            <p>We will collect the data anonymously. [Note: This is quite rare; use term only if accurate. Coded/audio/videotaped data is not considered anonymous.]</p>
 			<p>Other &laquo;<span class="prompt">(describe)</span>&raquo;</p>
         ]]></value></property>
     </bean>
