@@ -150,6 +150,7 @@
 						<entry key="Subgroup" value="Subgroups of subjects or sub-studies with different consent forms" />
 						<entry key="StudentInvestigator" value="Student or postdoctoral lead researcher" />
 						<entry key="NumSubjects" value="Anticipated number of study subjects (if relevant to consent)" />
+						<entry key="Screening" value="Screening of potential subjects" />
 						<entry key="Randomization" value="Randomization procedures" />
 						<entry key="DirectBenefits" value="Benefits to individual subject" />
 						<entry key="Alternatives" value="Alternatives to participation" />
@@ -307,7 +308,7 @@
             </value>
         </constructor-arg>
         <constructor-arg value="procScreen" />
-        <property name="relevance"><map><entry key="researchType" value="Biomedical" /></map></property>
+        <property name="relevance"><map><entry key="optionalQuestions" value="Screening" /></map></property>
     </bean>
     
     <bean id="screenBloodForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
@@ -369,12 +370,12 @@
     <bean id="screenDurationForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
         <constructor-arg ref="textArea" />
         <constructor-arg value="Screening Procedures: Duration" />
-        <constructor-arg value="How long with screening procedures take? Estimate duration." />
+        <constructor-arg value="How long will screening procedures take? Estimate duration." />
         <constructor-arg value="screenDuration" />
         <property name="defaultText"><value><![CDATA[
         	The screening procedures will take a total of &laquo;<span class="prompt">...</span>&raquo; minutes (&laquo;<span class="prompt">...</span>&raquo; hours).
         ]]></value></property>
-        <property name="relevance"><map><entry key="procScreen" value="," /></map></property>
+        <property name="relevance"><map><entry key="optionalQuestions" value="Screening" /></map></property>
     </bean>
         	
     <bean id="procRandomztnForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
@@ -497,7 +498,7 @@
         <constructor-arg value="procAudio" />
         <property name="defaultText">
         	<value><![CDATA[
-        	<p>With your permission, I will make an audio recording and take notes during the interview &laquo;<span class="prompt">/other</span>&raquo;.  This is to accurately record information you provide, and will be used for transcription purposes only &laquo;<span class="prompt">if accurate – adapt if other uses intended, per below</span>&raquo;.  If you choose not to be recorded, I will take notes instead.  If you agree to being recorded but feel uncomfortable at any time during the interview &laquo;<span class="prompt">/other</span>&raquo;, I can turn off the recorder at your request.  Or if you don't wish to continue, you can stop the interview &laquo;<span class="prompt">/other</span>&raquo; at any time.</p> 
+        	<p>With your permission, I will make an audio recording and take notes during the interview &laquo;<span class="prompt">/other</span>&raquo;.  This is to accurately record information you provide, and will be used for transcription purposes only &laquo;<span class="prompt">if accurate; adapt if other uses intended, per below</span>&raquo;.  If you choose not to be recorded, I will take notes instead.  If you agree to being recorded but feel uncomfortable at any time during the interview &laquo;<span class="prompt">/other</span>&raquo;, I can turn off the recorder at your request.  Or if you don't wish to continue, you can stop the interview &laquo;<span class="prompt">/other</span>&raquo; at any time.</p> 
 			<p>&laquo;<span class="prompt">If applicable</span>&raquo;: I may want to use some of the audio recordings of you in public presentations related to the research.  Please read the attached Media Records Release Form. It outlines several possible uses of the recordings and asks for your specific consent to use them in each way.  I will not use any recordings of you in any future presentation without your consent.</p>
 			]]></value>
         </property>
@@ -511,7 +512,7 @@
         <constructor-arg value="procVideo" />
         <property name="defaultText">
         	<value><![CDATA[
-        	<p>With your permission, I will make a video recording and take notes during the interview &laquo;<span class="prompt">/other</span>&raquo;.  This to accurately record information for this study only &laquo;<span class="prompt">if accurate – adapt if other uses intended, per below</span>&raquo;.  If you choose not to be video recorded, I will take notes instead.  If you agree to being recorded but feel uncomfortable at any time during the interview &laquo;<span class="prompt">/other</span>&raquo;, I can turn off the video recorder at your request &laquo;<span class="prompt">if accurate; if not, describe other options</span>&raquo;.  Or if you don't wish to continue, you can stop the interview &laquo;<span class="prompt">/other</span>&raquo; at any time.</p> 
+        	<p>With your permission, I will make a video recording and take notes during the interview &laquo;<span class="prompt">/other</span>&raquo;.  This is to accurately record information for this study only &laquo;<span class="prompt">if accurate; adapt if other uses intended, per below</span>&raquo;.  If you choose not to be video recorded, I will take notes instead.  If you agree to being recorded but feel uncomfortable at any time during the interview &laquo;<span class="prompt">/other</span>&raquo;, I can turn off the video recorder at your request &laquo;<span class="prompt">if accurate; if not, describe other options</span>&raquo;.  Or if you don't wish to continue, you can stop the interview &laquo;<span class="prompt">/other</span>&raquo; at any time.</p> 
 			<p>&laquo;<span class="prompt">If applicable</span>&raquo;: I may want to use some of the video recordings of you in public presentations related to the research.  Please read the attached Media Records Release Form. It outlines several possible uses of the recordings and asks for your specific consent to use them in each way.  I will not use any recordings of you in any future presentation without your consent.</p>
 			]]></value>
         </property>
@@ -631,7 +632,7 @@
         <constructor-arg value="Biomedical Procedures: DNA/Genetic Sampling" />
         <constructor-arg><value><![CDATA[
         	<p>Edit the description below.</p>
-        	<p>(See <em>CPHS Guidelines on Human DNA/Genetics Research</em> for detail on consent language, etc.)</p>
+        	<p>(See <a href="http://cphs.berkeley.edu/genetic_genomic.pdf">CPHS Guidelines on Genetic/Genomic Research</a> for details on consent language, etc.)</p>
         ]]></value></constructor-arg>
         <constructor-arg value="procDNA" />
         <property name="defaultText">
@@ -804,7 +805,6 @@
         	<p>When we collect data, it will be coded, and the key to the code will be kept separately.</p>
             <p>We will not maintain a link between your identity and the research data.</p>
 			<p>Personal identifiers will be removed &laquo;<span class="prompt">state point in study when this will occur, e.g., "immediately after audio recordings have been transcribed."</span>&raquo;</p>
-            <p>We will collect the data anonymously. [Note: This is quite rare; use term only if accurate. Coded/audio/videotaped data is not considered anonymous.]</p>
 			<p>Other &laquo;<span class="prompt">(describe)</span>&raquo;</p>
         ]]></value></property>
     </bean>
@@ -812,10 +812,12 @@
     <bean id="dataStorageForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
         <constructor-arg ref="textArea" />
         <constructor-arg value="Data Storage" />
-        <constructor-arg value="How will the data be stored? Edit the statement below." />
+        <constructor-arg><value><![CDATA[
+         	<p>How will data be stored? See the <a href="http://cphs.berkeley.edu/datasecurity.html">CPHS Data Security Policy</a> for detail about requirements and edit the statement below as appropriate.</p>
+		]]></value></constructor-arg>
         <constructor-arg value="dataStorage" />
         <property name="defaultText"><value><![CDATA[
-        		<p>Your research records, including &laquo;<span class="prompt">insert all that apply: audio recordings, video recordings, computer-based data</span>&raquo;, will be stored &laquo;<span class="prompt">choose all that apply:</span>&raquo; in a locked cabinet, in a secured building; in an encrypted format, on a password-protected computer, other &laquo;<span class="prompt>(describe)</span>&raquo;].</p> 
+        		<p>Your research records, including &laquo;<span class="prompt">insert all that apply: audio recordings, video recordings, computer-based data</span>&raquo;, will be stored &laquo;<span class="prompt">choose all that apply:</span> in a locked cabinet, in a secured building; in an encrypted format, on a password-protected computer, other <span class="prompt">(describe)</span>&raquo;.</p>
         ]]></value></property>
     </bean>
    
@@ -827,7 +829,7 @@
         <property name="defaultText"><value><![CDATA[
         	<p>Only I/the researcher(s) will have access to your study records.</p>
 			<p>Only my faculty advisor and I will have access to your study records.</p>
-			<p>Your personal information may be given out if required by law. Organizations that may look at and copy your medical records for research, quality assurance, or data analysis include:<br />
+			<p>Your personal information may be given out if required by law. Organizations that may look at and copy your records for research, quality assurance, or data analysis include:<br />
 			&laquo;<span class="prompt">List relevant organizations, e.g., study sponsor, FDA (if study involves drugs, devices, or biologics regulated by the FDA), etc.</span>&raquo;</p>
 			<p>&laquo;<span class="prompt">If there is a reasonable expectation (from topic under study and/or target subject population) that reportable information may be disclosed to the researcher during the study, use wording such as:</span>&raquo;<br />
 			&laquo;<span class="prompt">Sensitive/reportable research information</span>&raquo;: We will keep your study data as confidential as possible, unless it is certain information that we must report for legal or ethical reasons, such as child abuse, elder abuse, or intent to hurt yourself or others.</p>
@@ -896,7 +898,7 @@
     <bean id="costsForm" class="edu.berkeley.rac.ophs.consentBuilder.ui.forms.SingleQuestionForm" scope="prototype" >
         <constructor-arg ref="textArea" />
         <constructor-arg value="Costs" />
-        <constructor-arg value="Describe any costs (e.g., transportation, standard of care, etc.) for which the participant or a third party payer will be responsible. If none, submit the statement below." />
+        <constructor-arg value="Describe any costs (e.g., transportation, standard of care, etc.) for which the participant or a third party payer will be responsible. If none, and costs to subjects would usually be involved in this type of study, add the statement below. Otherwise, this section may be omitted." />
         <constructor-arg value="costs" />
         <property name="defaultText" value="You will not be charged for any of the study activities." />
         <property name="relevance"><map><entry key="optionalQuestions" value="Costs"></entry></map></property>

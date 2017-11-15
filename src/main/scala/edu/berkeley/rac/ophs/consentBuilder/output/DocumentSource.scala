@@ -109,20 +109,20 @@ class DocumentSource(formList: FormList, consent: Consent) extends StreamSource 
   addStyledParagraph("Heading1", "Introduction")
   
   addParagraph (
-    (answers get "si") match
+    getAnswer("si") match
     {
       case null =>
-        "My name is " + (answers get "pi") + ". I am a faculty member at the University of California, Berkeley, in " +
-        (answers get "department") + ".  I am planning to conduct a research study, which I invite you to take part in."
+        "My name is " + getAnswer("pi") + ". I am a faculty member at the University of California, Berkeley, in " +
+        getAnswer("department") + ". I am planning to conduct a research study, which I invite you to take part in."
       case researcher =>
         "My name is " + researcher + ". I am" + (
-          (answers get "affiliation") match
+          getAnswer("affiliation") match
           {
             case null => " "
             case affiliation => " " + affiliation + " "
           }
           ) + 
-        "working with " + (answers get "pi") + " in " + (answers get "department") +
+        "working with " + getAnswer("pi") + " in " + getAnswer("department") +
         " at the University of California, Berkeley.  We are planning to conduct a research study, which I invite you to take part in."
     })
   addHTMLAnswer("inclusion")
@@ -206,12 +206,11 @@ class DocumentSource(formList: FormList, consent: Consent) extends StreamSource 
   
   val optionalQs = answers get "optionalQuestions"
   val hasDirectBenefits = optionalQs != null && (optionalQs contains "DirectBenefits")
+  if (!hasDirectBenefits)
+    addParagraph("There is no direct benefit to you expected from taking part in this study.")
   addHTMLSnippet(
     (new HTMLSection())
-      if (hasDirectBenefits)
-        addHtmlAnswer("benefitP")
-      else
-        addParagraph("There is no direct benefit to you expected from taking part in this study.")
+      addHTMLAnswer("benefitP")
       addHTMLAnswer("benefitS")
       asHTML,
     "Benefits",
@@ -280,14 +279,14 @@ class DocumentSource(formList: FormList, consent: Consent) extends StreamSource 
   {
     addStyledParagraph("Heading2", "Certificate of Confidentiality:")
     addParagraph("To help us protect your privacy, we have obtained a Certificate of Confidentiality from the National Institutes of Health (NIH). With this Certificate, researchers cannot be forced to disclose information that may identify you, even by a court subpoena, in any federal, state, or local civil, criminal, administrative, legislative, or other proceedings.")
-    addParagraph("Exceptions: A Certificate of Confidentiality does not prevent researchers from disclosing certain information about you for legal or ethical reasons. For example, we will report information about child abuse, elder abuse, or intent to hurt yourself or others.  If an insurer, employer, or other person obtains your written consent to receive research information, we cannot use the Certificate to withhold that information. In addition, the Certificate may not be used to withhold information from the federal government needed for auditing or evaluating federally funded projects or information needed by the FDA, e.g., for quality assurance or data analysis.")
+    addParagraph("Exceptions: A Certificate of Confidentiality does not prevent researchers from voluntarily disclosing certain information about you for legal or ethical reasons. For example, we will report information about child abuse, elder abuse, or intent to hurt yourself or others.  If an insurer, employer, or other person obtains your written consent to receive research information, we cannot use the Certificate to withhold that information. In addition, the Certificate may not be used to withhold information from the federal government needed for auditing or evaluating federally funded projects or information needed by the FDA, e.g., for quality assurance or data analysis.")
   }
   addStyledParagraph("Heading2", "Future use of study data:")
   addHTMLAnswer("dataRetention")
   if ((answers get "specimen") != null && ((answers get "specimen") contains "Y"))
   {
     addStyledParagraph("Heading2", "Future use of study specimens:")
-    addParagraph("If you consent to give blood or tissue specimens (including cheek swab and saliva samples) as part of this study, these specimens will become the property of the University of California. The specimens and the DNA they contain may be used in this research and in other research, and may be shared with other organizations. The specimens could lead to discoveries or inventions that may be of value to the University of California or to other organizations. Under state law, you do not have any right to money or other compensation stemming from products that may be developed from the specimens.")
+    addParagraph("Specimens (such as blood, tissue, or saliva) collected from you for this study and/or information obtained from your specimens may be used in this research or other research, and shared with other organizations. You will not share in any commercial value or profit derived from the use of your specimens and/or information obtained from them.")
   }
   
   if ((answers get "alternatives") != null && ((answers get "alternatives").trim.length > 0))
@@ -326,13 +325,14 @@ class DocumentSource(formList: FormList, consent: Consent) extends StreamSource 
   
   addStyledParagraph("Heading1", "Consent")
   
+  addParagraph("If you wish to participate in this study, please sign and date below.")
   val researchType = answers get "researchType"
   if (researchType != null && (researchType contains "Biomedical")) {
-    addParagraph("You have been given a copy of this consent form and of the Medical Research Subject's Bill of Rights to keep.")
+    addParagraph("You will be given a copy of this consent form and of the Medical Research Subject's Bill of Rights to keep.")
   }
   else
   {
-    addParagraph("You have been given a copy of this consent form to keep.")
+    addParagraph("You will be given a copy of this consent form to keep.")
   }
   val hipaa = answers get "hipaa"
   if (hipaa != null && (hipaa contains "Yes")) addParagraph ("You will be asked to sign a separate form authorizing access, use, creation, or disclosure of health information about you.")
